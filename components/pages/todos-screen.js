@@ -4,6 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Toast from 'react-native-simple-toast';
 import { openDatabase } from 'react-native-sqlite-storage';
 import { FloatingAction } from "react-native-floating-action";
+import Dialog from "react-native-dialog";
 import IconIon from 'react-native-vector-icons/Ionicons';
 import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
 
