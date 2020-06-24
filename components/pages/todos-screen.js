@@ -54,7 +54,7 @@ function TodosScreen({navigation, route}){
       }, [navigation]);
 
     const showListOptions = () => {
-        navigation.navigate('List Details', {listId: currentListId, listName: currentListName})
+        navigation.navigate('List Details', {listId: currentListId, listName: currentListName, addOrEdit: 'Edit'})
     }
 
     const showAppHelp = () => {
