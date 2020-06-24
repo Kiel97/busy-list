@@ -1,8 +1,7 @@
 import React, { useEffect, useCallback, useLayoutEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, ActivityIndicator, BackHandler } from 'react-native';
+import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Toast from 'react-native-simple-toast';
-import Dialog from "react-native-dialog";
 import { openDatabase } from 'react-native-sqlite-storage';
 import { FloatingAction } from "react-native-floating-action";
 import IconIon from 'react-native-vector-icons/Ionicons';
@@ -16,8 +15,6 @@ function TodosScreen({navigation, route}){
     const [state, setState] = React.useState({
         data: []
     });
-    const [dialogVisible, setDialogVisible] = React.useState(false);
-    const [taskNameInput, setTaskNameInput] = React.useState('')
     const [fetchIndicator, setFetchIndicator] = React.useState(false)
     const [doneTasksCount, setDoneTasksCount] = React.useState(0)
     const [allTasksCount, setAllTasksCount] = React.useState(0)
@@ -33,8 +30,6 @@ function TodosScreen({navigation, route}){
             
             navigation.setOptions({ title: `${currentListName} Tasks` })
         });
-
-        // FetchTodosByListId(currentListId);
         
         return unsubscribe
     }, [navigation]);
@@ -115,17 +110,6 @@ function TodosScreen({navigation, route}){
             console.log('changeDoneStatus OK')
         }
         );
-    }
-
-    const showAddNewTaskDialog = () => {
-        setDialogVisible(true);
-        console.log("showAddNewTaskDialog")
-        setTaskNameInput('')
-    }
-
-    const closeAddNewTaskDialog = () => {
-        setDialogVisible(false)
-        setTaskNameInput('')
     }
 
     const addNewTask = (taskName) => {
@@ -313,19 +297,11 @@ function TodosScreen({navigation, route}){
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
                     <ToDoItem id={item.id} taskName={item.taskName} done={item.done}
-                        onPress={() => navigation.navigate('Task Details', {taskId: item.id, taskName: item.taskName})}
+                        onPress={() => navigation.navigate('Task Details', {taskId: item.id, taskName: item.taskName, listId: item.listId, addOrEdit: "Edit"})}
                         onCheckmarkPress={() => {changeDoneStatus(item.id)}}
                         onLongPress={() => {showDeleteDialog(item.id, item.taskName)}}
                     />)}
             />
-
-            <Dialog.Container visible={dialogVisible} {...{onBackdropPress: () => {setDialogVisible(false)}}}>
-                <Dialog.Title>Add new task to list</Dialog.Title>
-                <Dialog.Description>Type a name for your new task</Dialog.Description>
-                <Dialog.Input value={taskNameInput} onChangeText={text => setTaskNameInput(text)} />
-                <Dialog.Button label="Cancel" onPress={() => closeAddNewTaskDialog}/>
-                <Dialog.Button label="Submit" onPress={() => addNewTask(taskNameInput)}/>
-            </Dialog.Container>
             
             <FloatingAction
                 color='#E85100'
@@ -350,7 +326,7 @@ function TodosScreen({navigation, route}){
                     if (name==="bt_randomtaskbutton")
                         addRandomTask()
                     else if (name==="bt_addnewbutton")
-                        showAddNewTaskDialog()
+                        navigation.navigate('Task Details', {listId: currentListId, taskName: '', addOrEdit: "Add"})
                     else
                         console.log('Unknown option')
                 }}
