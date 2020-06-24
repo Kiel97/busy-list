@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import IconOct from 'react-native-vector-icons/Octicons';
+import IconAnt from 'react-native-vector-icons/AntDesign';
 
 function ToDoListItem(props) {
     const id = props.id;
@@ -8,7 +8,7 @@ function ToDoListItem(props) {
     return(
         <TouchableOpacity style={styles.listItem} onPress={props.onPress} onLongPress={props.onLongPress} delayLongPress={600} activeOpacity={0.5}>
             <Text style={styles.listItemText}>{props.listName}</Text>
-            <IconOct name="tasklist" color="#0097E8" size={44} style={styles.icon}/>
+            <IconAnt name="hearto" color="#0097E8" size={40} style={styles.icon}/>
         </TouchableOpacity>
     );
 
