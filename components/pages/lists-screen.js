@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import IconIon from 'react-native-vector-icons/Ionicons';
@@ -8,6 +8,7 @@ import Dialog from "react-native-dialog";
 import ToDoListItem from '../todo-list-item';
 import { SearchBar } from 'react-native-elements'
 import { FloatingAction } from "react-native-floating-action";
+import { HeaderButtons, HeaderButton, Item, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
 
 const db = openDatabase("busylist.db");
 
@@ -30,6 +31,24 @@ function ListsScreen({navigation, route}){
         }
 
     }, []);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+          // in your app, extract the arrow function into a separate component
+          // to avoid creating a new one every time
+          headerRight: () => (
+            <HeaderButtons>
+              <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
+                <HiddenItem title="Toggle Search Bar..." onPress={() => setSearchBarVisible(searchBarVisible => !searchBarVisible)} />
+                <HiddenItem title="Delete all lists" onPress={() => alert('Usuń wszystko!!!')} />
+                <HiddenItem title="App Options" onPress={() => alert('Opcje ekranu ListsScreen')} />
+                <HiddenItem title="Help" onPress={() => alert('Pomoc')} />
+              </OverflowMenu>
+            </HeaderButtons>
+          ),
+        });
+      }, [navigation]);
+    
 
     const updateSearchText = (newText) => {
         console.log('searchText:', newText)
