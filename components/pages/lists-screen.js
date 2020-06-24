@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useLayoutEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, TextInput } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import IconIon from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-simple-toast';
 import { openDatabase } from 'react-native-sqlite-storage';
 import Dialog from "react-native-dialog";
-import ToDoListItem from '../todo-list-item';
 import { SearchBar } from 'react-native-elements'
 import { FloatingAction } from "react-native-floating-action";
-import { HeaderButtons, HeaderButton, Item, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
+import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
+
+import ToDoListItem from '../todo-list-item';
 
 const db = openDatabase("busylist.db");
 
