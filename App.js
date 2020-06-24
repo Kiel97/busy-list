@@ -18,7 +18,7 @@ function App() {
         <Stack.Navigator>
           <Stack.Screen options={{headerShown: false}} name="Welcome" component={WelcomeScreen}/>
           <Stack.Screen name="Your Lists" component={ListsScreen}/>
-          <Stack.Screen name="Your Todos" component={TodosScreen} options={({ route }) => ({ title : route.params?.headerTitle})}/>
+          <Stack.Screen name="Your Todos" component={TodosScreen}/>
           <Stack.Screen name="Task Details" component={TodoDetails}/>
           <Stack.Screen name="List Details" component={ListDetails}/>
         </Stack.Navigator>

@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useLayoutEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, ActivityIndicator, BackHandler } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Toast from 'react-native-simple-toast';
 import Dialog from "react-native-dialog";
@@ -21,19 +21,21 @@ function TodosScreen({navigation, route}){
     const [fetchIndicator, setFetchIndicator] = React.useState(false)
     const [doneTasksCount, setDoneTasksCount] = React.useState(0)
     const [allTasksCount, setAllTasksCount] = React.useState(0)
+
     const currentListId = route.params?.listId;
-    const currentListName = route.params?.headerTitle;
+    const currentListName = route.params?.listName;
 
     useEffect(() => {
         console.log("TodosScreen: ComponentDidMount")
+        const unsubscribe = navigation.addListener('focus', () => {
+            console.log("Refresh list")
+            FetchTodosByListId(currentListId);
+        });
 
-        FetchTodosByListId(currentListId);
+        // FetchTodosByListId(currentListId);
         
-        return () => {
-            console.log("TodosScreen: ComponentWillUnmount")
-        }
-
-    }, []);
+        return unsubscribe
+    }, [navigation]);
 
     useLayoutEffect(() => {
         navigation.setOptions({

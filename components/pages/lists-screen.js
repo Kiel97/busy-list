@@ -22,15 +22,15 @@ function ListsScreen({navigation, route}){
     const [searchBarVisible, setSearchBarVisible] = React.useState(false);
 
     useEffect(() => {
-        console.log("ListsScreen: ComponentDidMount");
+        console.log("ListsScreen: ComponentDidMount")
+        const unsubscribe = navigation.addListener('focus', () => {
+            console.log("Refresh list")
+            FetchAllTodoLists();
 
-        FetchAllTodoLists();
-
-        return () => {
-            console.log("ListsScreen: ComponentWillUnmount");
-        }
-
-    }, []);
+        });
+        
+        return unsubscribe
+    }, [navigation]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -285,7 +285,7 @@ function ListsScreen({navigation, route}){
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
                     <ToDoListItem id={item.id} listName={item.listName}
-                        onPress={()=>navigation.navigate('Your Todos', {listId: item.id, listName: item.listName, headerTitle: `${item.listName || 'List'}'s tasks`})}
+                        onPress={()=>navigation.navigate('Your Todos', {listId: item.id, listName: item.listName})}
                         onLongPress={() => showDeleteDialog(item.id, item.listName)}
                     />)}
             />
