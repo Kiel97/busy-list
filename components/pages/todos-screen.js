@@ -263,7 +263,10 @@ function TodosScreen({navigation, route}){
 
     return (
         <View style={styles.container}>
-            <Text style={styles.textCounter}>Completed Tasks: {doneTasksCount}/{allTasksCount}</Text>
+            <View style={styles.topInfoView}>
+                <Text style={styles.textCounter}>Completed Tasks: {doneTasksCount}/{allTasksCount}</Text>
+                <ActivityIndicator animating={fetchIndicator} size={'large'} color="#fff" />
+            </View>
             <FlatList style={styles.scrollViewOfLists}
                 data={state.data}
                 extraData={state.data}
@@ -353,6 +356,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'flex-start',
         fontWeight: 'bold',
+    },
+    topInfoView: {
+        flexDirection: "row",
+        alignSelf: 'stretch',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
 });
 
