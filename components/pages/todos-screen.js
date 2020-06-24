@@ -1,10 +1,12 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useLayoutEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Toast from 'react-native-simple-toast';
 import Dialog from "react-native-dialog";
 import { openDatabase } from 'react-native-sqlite-storage';
 import { FloatingAction } from "react-native-floating-action";
+import IconIon from 'react-native-vector-icons/Ionicons';
+import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
 
 import ToDoItem from '../todo-item';
 
@@ -31,6 +33,32 @@ function TodosScreen({navigation, route}){
         }
 
     }, []);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <HeaderButtons>
+              <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
+                <HiddenItem title="Delete all tasks" onPress={deleteAllTasks} />
+                <HiddenItem title="List Options" onPress={showListOptions} />
+                <HiddenItem title="Help" onPress={showAppHelp} />
+              </OverflowMenu>
+            </HeaderButtons>
+          ),
+        });
+      }, [navigation]);
+
+    const deleteAllTasks = () => {
+        alert('Usuń wszystkie todos!!!')
+    }
+
+    const showListOptions = () => {
+        alert('Opcje ekranu TodosScreen')
+    }
+
+    const showAppHelp = () => {
+        alert('Pomoc')
+    }
 
     const FetchTodosByListId = (listId) => {
         db.transaction(tx => {
