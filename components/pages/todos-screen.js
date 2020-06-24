@@ -50,7 +50,7 @@ function TodosScreen({navigation, route}){
       }, [navigation]);
 
     const showListOptions = () => {
-        alert('Opcje ekranu TodosScreen')
+        navigation.navigate('List Details', {listId: currentListId, listName: currentListName})
     }
 
     const showAppHelp = () => {
