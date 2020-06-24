@@ -95,15 +95,15 @@ function TodoDetails({navigation, route}) {
             <Text style={styles.modeText}>{addOrEdit==='Add' ? 'Add mode' : 'Edit mode'}</Text>
             
             <View style={styles.blueBackground}>
-                <View style={styles.optionsBox} >
+                <View style={styles.optionsView} >
                     <TextInput style={styles.textInput} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}></TextInput>
                 </View>
-                <View style={styles.buttonBox}>
-                    <TouchableOpacity style={[styles.buttonActive, styles.shadow]} disabled={taskName.trim().length < 1} onPress={() => acceptAction()} >
+                <View style={styles.buttonView}>
+                    <TouchableOpacity style={[styles.buttonBase, taskName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={taskName.trim().length < 1} onPress={() => acceptAction()} >
                         <IconAnt name="check" size={40} color="#fff" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.buttonActive, styles.shadow]} onPress={() => rejectAction()}>
+                    <TouchableOpacity style={[styles.buttonBase, styles.buttonActive, styles.shadow]} onPress={() => rejectAction()}>
                         <IconAnt name="close" size={40} color="#fff" />
                     </TouchableOpacity>
                 </View>
@@ -119,6 +119,11 @@ const styles = StyleSheet.create({
     },
     buttonActive: {
         backgroundColor: "#E85100",
+    },
+    buttonDisabled: {
+        backgroundColor: "#ABABAB",
+    },
+    buttonBase: {
         minWidth: 54,
         minHeight: 54,
         alignItems: 'center',
@@ -136,7 +141,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#0097E8"
     },
-    buttonBox: {
+    buttonView: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
@@ -152,7 +157,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 5,
     },
-    optionsBox: {
+    optionsView: {
         flex: 1,
         alignSelf: 'stretch',
         justifyContent: 'flex-start',
