@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react
 import { openDatabase } from 'react-native-sqlite-storage';
 
 const db = openDatabase("busylist.db");
-const forceDBReinit = true;         // set it to `true` to reinitialize tables
-const prepopulateDB = true;         // set it to `true` to prepopulate tables after recreating tables
+const forceDBReinit = false;         // set it to `true` to reinitialize tables
+const prepopulateDB = false;         // set it to `true` to prepopulate tables after recreating tables
 
 function WelcomeScreen({navigation, route}){
   React.useEffect(() => {
@@ -75,7 +75,7 @@ function WelcomeScreen({navigation, route}){
     return (
         <ImageBackground style={styles.container} source={require('../../assets/images/background3.jpg')} imageStyle={styles.imageStyle} >
             <TouchableOpacity style={styles.containerClickable} onPress={() => navigation.navigate('Your Lists')} activeOpacity={0.7}>
-              <Text style={styles.textTitle}>Boredom Fighter</Text>
+              <Text style={styles.textTitle}>Busy List</Text>
               <Text style={styles.textStandard}>No idea what to do? No more!</Text>
               <View style={{marginVertical: 10}} />
               <Text style={styles.textStandard}>Click to continue</Text>
