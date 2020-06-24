@@ -22,6 +22,7 @@ function TodosScreen({navigation, route}){
     const [doneTasksCount, setDoneTasksCount] = React.useState(0)
     const [allTasksCount, setAllTasksCount] = React.useState(0)
     const currentListId = route.params?.listId;
+    const currentListName = route.params?.headerTitle;
 
     useEffect(() => {
         console.log("TodosScreen: ComponentDidMount")
@@ -39,7 +40,7 @@ function TodosScreen({navigation, route}){
           headerRight: () => (
             <HeaderButtons>
               <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
-                <HiddenItem title="Delete all tasks" onPress={deleteAllTasks} />
+                <HiddenItem title="Delete all tasks" onPress={showDeleteAllDialog} />
                 <HiddenItem title="List Options" onPress={showListOptions} />
                 <HiddenItem title="Help" onPress={showAppHelp} />
               </OverflowMenu>
@@ -47,10 +48,6 @@ function TodosScreen({navigation, route}){
           ),
         });
       }, [navigation]);
-
-    const deleteAllTasks = () => {
-        alert('Usuń wszystkie todos!!!')
-    }
 
     const showListOptions = () => {
         alert('Opcje ekranu TodosScreen')
@@ -179,6 +176,24 @@ function TodosScreen({navigation, route}){
             ]
         )
     })
+
+    const showDeleteAllDialog = useCallback(() =>{
+        Alert.alert(
+            "Confirm deletion of all",
+            `Are you sure you want to delete all tasks from ${currentListName} list (id:${currentListId}})? You will lose them forever!`,
+            [
+                {
+                    text: 'No',
+                    onPress: () => console.log(`Canceled deletetion of all tasks!`),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Yes',
+                    onPress: () => {deleteAllTasks(currentListId)},
+                },
+            ]
+        )
+    }) 
     
     const deleteTask = useCallback((taskId) => {
         db.transaction(tx => {
@@ -213,6 +228,43 @@ function TodosScreen({navigation, route}){
         );
 
         Toast.show('Successfully removed selected task.');
+    })
+
+    const deleteAllTasks = useCallback((listId) => {
+        db.transaction(tx => {
+            tx.executeSql('DELETE FROM "todos" WHERE "todos"."listId"=?;',
+            [listId],
+            (tx, results) => {
+              console.log("deleteAllTasks: Affected " + results.rowsAffected);
+              if (results.rowsAffected > 0){
+                tx.executeSql('SELECT * FROM "todos" WHERE "todos"."listId"=?',
+                [currentListId],
+                (tx, results) => {
+                var fetchedData = [];
+                console.log(`deleteAllTasks: Fetched ${results.rows.length} tasks`)
+                for (let i = 0; i < results.rows.length; ++i) {
+                    fetchedData.push(results.rows.item(i));
+                }
+                setState({data: fetchedData})
+                setAllTasksCount(fetchedData.length)
+                setDoneTasksCount(fetchedData.filter(item => item.done === 1).length)
+
+                Toast.show('Successfully removed all tasks.');
+                });
+              }
+              else {
+                Toast.show('Your list is empty. No tasks to delete.')
+              }
+            });
+        }, function(error) {
+            console.log('deleteAllTasks ERROR: ' + error.message)
+            showAlert('deleteAllTasks ERROR', error.message)
+        }, function() {
+            console.log('deleteAllTasks OK')
+        }
+        );
+
+        
     })
 
     async function addRandomTask() {
