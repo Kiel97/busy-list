@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native'
 import { openDatabase } from 'react-native-sqlite-storage';
 
 const db = openDatabase("busylist.db");
@@ -19,14 +19,21 @@ function ListDetails({navigation, route}) {
             [trimmedNewListName, listId],
             (tx, results) => {
                 console.log("updateListAndGoBack: Affected", results.rowsAffected)
+                Alert.alert('Rename list',
+                            'Successfully renamed list',
+                            [
+                                {
+                                    text: 'OK',
+                                    onPress: () => navigation.navigate('Your Todos', {listId: listId, listName: trimmedNewListName}),
+                                },
+                            ]
+                        )
             })
         }, function(error) {
             console.log('updateListAndGoBack ERROR: ' + error.message)
         }, function() {
             console.log('updateListAndGoBack OK')
         })
-
-        navigation.goBack()
     }
 
     return (
