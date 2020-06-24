@@ -30,6 +30,8 @@ function TodosScreen({navigation, route}){
         const unsubscribe = navigation.addListener('focus', () => {
             console.log("Refresh Todo list")
             FetchTodosByListId(currentListId);
+            
+            navigation.setOptions({ title: `${currentListName} Tasks` })
         });
 
         // FetchTodosByListId(currentListId);
