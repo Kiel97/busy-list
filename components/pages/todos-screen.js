@@ -41,7 +41,7 @@ function TodosScreen({navigation, route}){
             <HeaderButtons>
               <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
                 <HiddenItem title="Delete all tasks" onPress={showDeleteAllDialog} />
-                <HiddenItem title="Change list options" onPress={showListOptions} />
+                <HiddenItem title="Edit list options" onPress={showListOptions} />
                 <HiddenItem title="Help" onPress={showAppHelp} />
               </OverflowMenu>
             </HeaderButtons>
