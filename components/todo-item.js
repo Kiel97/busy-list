@@ -10,7 +10,7 @@ function ToDoItem(props) {
 
     return(
         <TouchableOpacity style={styles.listItem} onLongPress={props.onLongPress} delayLongPress={600} activeOpacity={0.5}>
-            <IconFon onPress={props.onPress} name={props.done ? doneIconName : notDoneIconName} color="#0097E8" size={32} style={styles.checkbox} />
+            <IconFon onPress={props.onCheckmarkPress} name={props.done ? doneIconName : notDoneIconName} color="#0097E8" size={32} style={styles.checkbox} />
             <Text style={styles.listItemText}>{props.taskName}</Text>
         </TouchableOpacity>
     );

@@ -309,7 +309,7 @@ function TodosScreen({navigation, route}){
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
                     <ToDoItem id={item.id} taskName={item.taskName} done={item.done}
-                        onPress={() => {changeDoneStatus(item.id)}}
+                        onCheckmarkPress={() => {changeDoneStatus(item.id)}}
                         onLongPress={() => {showDeleteDialog(item.id, item.taskName)}}
                     />)}
             />
