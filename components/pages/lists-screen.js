@@ -38,7 +38,7 @@ function ListsScreen({navigation, route}){
             <HeaderButtons>
               <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
                 <HiddenItem title="Toggle Search Bar..." onPress={toggleSearchBarVisibility} />
-                <HiddenItem title="Delete all lists" onPress={deleteAllLists} />
+                <HiddenItem title="Delete all lists" onPress={showDeleteEverythingDialog} />
                 <HiddenItem title="App Options" onPress={showAppOptions} />
                 <HiddenItem title="Help" onPress={showAppHelp} />
               </OverflowMenu>
@@ -49,10 +49,6 @@ function ListsScreen({navigation, route}){
     
     const toggleSearchBarVisibility = () => {
         setSearchBarVisible(searchBarVisible => !searchBarVisible)
-    }
-
-    const deleteAllLists = () => {
-        alert('Usuń wszystko!!!')
     }
 
     const showAppOptions = () => {
@@ -191,6 +187,37 @@ function ListsScreen({navigation, route}){
         Toast.show('Successfully removed selected task');
     })
 
+    const deleteAllLists = useCallback(() => {
+        db.transaction(tx => {
+            tx.executeSql('DELETE FROM "lists";',
+            [],
+            (tx, results) => {
+              console.log("deleteAllLists: Affected " + results.rowsAffected);
+              if (results.rowsAffected > 0){
+                tx.executeSql('SELECT * FROM "lists"', [], (tx, results) => {
+                    console.log(`deleteAllLists: Fetched ${results.rows.length} lists`)
+                    var fetchedData = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                      fetchedData.push(results.rows.item(i));
+                    }
+                    setState({data: fetchedData})
+                    setSearchText('')
+                    Toast.show('Successfully removed all lists with tasks');
+                });
+              }
+              else {
+                Toast.show('You have no lists to remove.');
+              }
+            });
+        }, function(error) {
+            console.log('deleteAllLists ERROR: ' + error.message)
+            showAlert('deleteAllLists ERROR', error.message)
+        }, function() {
+            console.log('deleteAllLists OK')
+        }
+        );
+    })
+
     const showAlert = (title, message) => {
         Alert.alert(
             title,
@@ -218,6 +245,24 @@ function ListsScreen({navigation, route}){
                 {
                     text: 'Yes',
                     onPress: () => {deleteList(listId)},
+                },
+            ]
+        )
+    })
+
+    const showDeleteEverythingDialog = useCallback(() =>{
+        Alert.alert(
+            "Confirm deletion of all lists",
+            `Are you sure you want to delete ALL LISTS and ALL TASKS from your application? You will lose them forever!`,
+            [
+                {
+                    text: 'No',
+                    onPress: () => console.log(`Canceled deletetion of all tasks!`),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Yes',
+                    onPress: () => {deleteAllLists()},
                 },
             ]
         )
