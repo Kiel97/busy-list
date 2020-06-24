@@ -6,6 +6,7 @@ import { OverflowMenuProvider } from 'react-navigation-header-buttons';
 import WelcomeScreen from './components/pages/welcome-screen';
 import ListsScreen from './components/pages/lists-screen';
 import TodosScreen from './components/pages/todos-screen';
+import TodoDetails from './components/pages/todo-details';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ function App() {
           <Stack.Screen options={{headerShown: false}} name="Welcome" component={WelcomeScreen}/>
           <Stack.Screen name="Your Lists" component={ListsScreen}/>
           <Stack.Screen name="Your Todos" component={TodosScreen} options={({ route }) => ({ title : route.params?.headerTitle})}/>
+          <Stack.Screen name="Task Details" component={TodoDetails}/>
         </Stack.Navigator>
       </OverflowMenuProvider>
     </NavigationContainer>
