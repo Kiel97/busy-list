@@ -6,7 +6,7 @@ function ToDoListItem(props) {
     const id = props.id;
 
     return(
-        <TouchableOpacity style={styles.listItem} onPress={props.onPress} onLongPress={props.onLongPress} delayLongPress={600} activeOpacity={0.5}>
+        <TouchableOpacity style={[styles.listItem, styles.shadow]} onPress={props.onPress} onLongPress={props.onLongPress} delayLongPress={600} activeOpacity={0.5}>
             <Text style={styles.listItemText}>{props.listName}</Text>
             <IconAnt name="hearto" color="#0097E8" size={40} style={styles.icon}/>
         </TouchableOpacity>
@@ -33,6 +33,16 @@ const styles = StyleSheet.create({
     },
     icon: {
         alignSelf: "center",
+    },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
 });
 

@@ -99,12 +99,12 @@ function TodoDetails({navigation, route}) {
                     <TextInput style={styles.textInput} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}></TextInput>
                 </View>
                 <View style={styles.buttonBox}>
-                    <TouchableOpacity style={styles.button} disabled={taskName.trim().length < 1} onPress={() => acceptAction()} >
-                        <IconAnt name="check" size={50} color="#0097E8" />
+                    <TouchableOpacity style={[styles.buttonActive, styles.shadow]} disabled={taskName.trim().length < 1} onPress={() => acceptAction()} >
+                        <IconAnt name="check" size={40} color="#fff" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={() => rejectAction()}>
-                        <IconAnt name="close" size={50} color="#0097E8" />
+                    <TouchableOpacity style={[styles.buttonActive, styles.shadow]} onPress={() => rejectAction()}>
+                        <IconAnt name="close" size={40} color="#fff" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -117,10 +117,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
     },
-    button: {
-        backgroundColor: "#fff",
-        minWidth: 64,
-        minHeight: 64,
+    buttonActive: {
+        backgroundColor: "#E85100",
+        minWidth: 54,
+        minHeight: 54,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'flex-end',
@@ -156,6 +156,16 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: 'stretch',
         justifyContent: 'flex-start',
+    },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
 });
 

@@ -94,12 +94,12 @@ function ListDetails({navigation, route}) {
                     <TextInput style={styles.textInput} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
                 </View>
                 <View style={styles.buttonBox}>
-                    <TouchableOpacity style={styles.button} disabled={listName.trim().length < 1} onPress={() => acceptOption()} >
-                        <IconAnt name="check" size={50} color="#0097E8" />
+                    <TouchableOpacity style={[styles.buttonActive, styles.shadow]} disabled={listName.trim().length < 1} onPress={() => acceptOption()} >
+                        <IconAnt name="check" size={40} color="#fff" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-                        <IconAnt name="close" size={50} color="#0097E8" />
+                    <TouchableOpacity style={[styles.buttonActive, styles.shadow]} onPress={() => navigation.goBack()}>
+                        <IconAnt name="close" size={40} color="#fff" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
     },
-    button: {
-        backgroundColor: "#fff",
-        minWidth: 64,
-        minHeight: 64,
+    buttonActive: {
+        backgroundColor: "#E85100",
+        minWidth: 54,
+        minHeight: 54,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'flex-end',
@@ -151,6 +151,16 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: 'stretch',
         justifyContent: 'flex-start',
+    },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
 });
 
