@@ -21,13 +21,13 @@ function TodoDetails({navigation, route}) {
         }
     }, [])
 
-    const addNewTaskD = (taskName) => {
+    const addNewTaskAndGoBack = (taskName) => {
         const newTaskName = taskName.trim()
         db.transaction(tx => {
             tx.executeSql('INSERT INTO "todos" ("listId", "taskName", "done") VALUES (?,?,?);',
             [listId, newTaskName, 0],
             (tx, results) => {
-                console.log("addNewTaskD: Affected", results.rowsAffected)
+                console.log("addNewTaskAndGoBack: Affected", results.rowsAffected)
                 Alert.alert('Add new task',
                             'Successfully added new task',
                             [
@@ -39,10 +39,10 @@ function TodoDetails({navigation, route}) {
                         )
             })
         }, function(error) {
-            console.log('addNewTaskD ERROR: ' + error.message)
-            showAlert('addNewTaskD ERROR', error.message)
+            console.log('addNewTaskAndGoBack ERROR: ' + error.message)
+            showAlert('addNewTaskAndGoBack ERROR', error.message)
         }, function() {
-            console.log('addNewTaskD OK')
+            console.log('addNewTaskAndGoBack OK')
         }
         );
     }
@@ -76,7 +76,7 @@ function TodoDetails({navigation, route}) {
 
     const acceptAction = () => {
         if (addOrEdit==="Add") {
-            addNewTaskD(taskName)
+            addNewTaskAndGoBack(taskName)
         }
         else if (addOrEdit==="Edit"){
             updateTaskAndGoBack(taskName)
