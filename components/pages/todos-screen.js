@@ -28,7 +28,7 @@ function TodosScreen({navigation, route}){
     useEffect(() => {
         console.log("TodosScreen: ComponentDidMount")
         const unsubscribe = navigation.addListener('focus', () => {
-            console.log("Refresh list")
+            console.log("Refresh Todo list")
             FetchTodosByListId(currentListId);
         });
 
