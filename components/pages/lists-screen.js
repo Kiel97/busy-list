@@ -16,8 +16,6 @@ const db = openDatabase("busylist.db");
 function ListsScreen({navigation, route}){
     
     const [state, setState] = React.useState({});
-    const [dialogVisible, setDialogVisible] = React.useState(false);
-    const [listNameInput, setListNameInput] = React.useState('');
     const [searchText, setSearchText] = React.useState('');
     const [searchBarVisible, setSearchBarVisible] = React.useState(false);
 
@@ -105,54 +103,6 @@ function ListsScreen({navigation, route}){
             console.log('FetchAllTodoLists OK')
         }
         );
-    }
-
-    const addNewList = useCallback((listName) => {
-        const newListName = listName.trim()
-        if (!newListName){
-            showAlert('Empty list name provided', 'You must provide non-empty list name')
-            return
-        }
-
-        db.transaction(tx => {
-            tx.executeSql('INSERT INTO "lists" ("listName") VALUES (?);',
-            [newListName],
-            (tx, results) => {
-              console.log("addNewList: Affected " + results.rowsAffected);
-              if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "lists"', [], (tx, results) => {
-                    console.log(`addNewList: Fetched ${results.rows.length} lists`)
-                    var fetchedData = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                      fetchedData.push(results.rows.item(i));
-                    }
-                    setState({data: fetchedData})
-                });
-            }
-            });
-        }, function(error) {
-            console.log('addNewList ERROR: ' + error.message)
-            showAlert('addNewList ERROR', error.message)
-        }, function() {
-            console.log('addNewList OK')
-        }
-        );
-        setDialogVisible(false)
-        setListNameInput('')
-
-        Toast.show('Successfully created new To-Do list.');
-    })
-
-    const showAddDialog = () => {
-        console.log("showAddDialog")
-        setDialogVisible(true)
-        setListNameInput('')
-    }
-
-    const closeAddDialog = () => {
-        console.log("closeAddDialog")
-        setDialogVisible(false)
-        setListNameInput('')
     }
 
     const deleteList = useCallback((listId) => {
@@ -290,14 +240,6 @@ function ListsScreen({navigation, route}){
                     />)}
             />
 
-            <Dialog.Container visible={dialogVisible} {...{onBackdropPress: () => {setDialogVisible(false)}}}>
-                <Dialog.Title>Add new To-Do list</Dialog.Title>
-                <Dialog.Description>Type a name for your new list</Dialog.Description>
-                <Dialog.Input value={listNameInput} onChangeText={text => setListNameInput(text)} />
-                <Dialog.Button label="Cancel" onPress={() => closeAddDialog}/>
-                <Dialog.Button label="Submit" onPress={() => addNewList(listNameInput)}/>
-            </Dialog.Container>
-
             <FloatingAction
                 color='#E85100'
                 actions={[
@@ -311,10 +253,9 @@ function ListsScreen({navigation, route}){
                 ]}
                 overrideWithAction
                 onPressItem={name => {
-                        showAddDialog()
+                    navigation.navigate('List Details', {listName: "", addOrEdit: 'Add'})
                 }}
             />
-
         </View>
     )
 }

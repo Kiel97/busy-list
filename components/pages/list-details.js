@@ -20,6 +20,32 @@ function ListDetails({navigation, route}) {
         }
     }, [])
 
+    const addNewListAndGoBack = (listName) => {
+        const newListName = listName.trim()
+
+        db.transaction(tx => {
+            tx.executeSql('INSERT INTO "lists" ("listName") VALUES (?);',
+            [newListName],
+            (tx, results) => {
+              console.log("addNewListAndGoBack: Affected " + results.rowsAffected);
+              Alert.alert('Add new list',
+                            'Successfully add new list',
+                            [
+                                {
+                                    text: 'OK',
+                                    onPress: () => navigation.goBack(),
+                                },
+                            ]
+                        )
+            }
+            );
+        }, function(error) {
+            console.log('addNewListAndGoBack ERROR: ' + error.message)
+        }, function() {
+            console.log('addNewListAndGoBack OK')
+        });
+    }
+
     const updateListAndGoBack = (newListName) => {
         console.log('updateListAndGoBack')
 
@@ -47,6 +73,18 @@ function ListDetails({navigation, route}) {
         })
     }
 
+    const acceptOption = () => {
+        if (addOrEdit==="Add"){
+            addNewListAndGoBack(listName)
+        }
+        else if (addOrEdit==="Edit"){
+            updateListAndGoBack(listName)
+        }
+        else{
+            console.log("Unknown addOrEdit status:", addOrEdit)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.modeText}>{addOrEdit==='Add' ? 'Add mode' : 'Edit mode'}</Text>
@@ -56,7 +94,7 @@ function ListDetails({navigation, route}) {
                     <TextInput style={styles.textInput} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
                 </View>
                 <View style={styles.buttonBox}>
-                    <TouchableOpacity style={styles.button} disabled={listName.trim().length < 1} onPress={() => updateListAndGoBack(listName)} >
+                    <TouchableOpacity style={styles.button} disabled={listName.trim().length < 1} onPress={() => acceptOption()} >
                         <IconAnt name="check" size={50} color="#0097E8" />
                     </TouchableOpacity>
 
