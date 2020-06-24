@@ -20,7 +20,6 @@ function ListsScreen({navigation, route}){
     const [listNameInput, setListNameInput] = React.useState('');
     const [searchText, setSearchText] = React.useState('');
     const [searchBarVisible, setSearchBarVisible] = React.useState(false);
-    // const [highestUsedId, setHighestUsedId] = React.useState(0);        // TEMP: Get rid of this when replacing with SQLite DB
 
     useEffect(() => {
         console.log("ListsScreen: ComponentDidMount");
@@ -94,12 +93,6 @@ function ListsScreen({navigation, route}){
 
     const FetchAllTodoLists = () => {
         console.log("Fetching All ToDo Lists...")
-        // var fetchedData = [
-        //     {id: 1, listName: "Lista", doneCount: 21, allCount: 37},
-        //     {id: 2, listName: "Druga Lista", doneCount: 3, allCount: 5},
-        //     {id: 3, listName: "Do zrobienia", allCount: 5},
-        //     {id: 4, listName: "Mobilki"},
-        // ]
         var fetchedData = [];
         db.transaction(tx => {
             tx.executeSql('SELECT * FROM "lists"', [], (tx, results) => {
@@ -116,8 +109,6 @@ function ListsScreen({navigation, route}){
             console.log('FetchAllTodoLists OK')
         }
         );
-
-        // setHighestUsedId(fetchedData.length+1);
     }
 
     const addNewList = useCallback((listName) => {
@@ -126,11 +117,6 @@ function ListsScreen({navigation, route}){
             showAlert('Empty list name provided', 'You must provide non-empty list name')
             return
         }
-        // var data = state.data;
-        // data.push({id: highestUsedId+1, listName: newListName})
-        // setState({data: data})
-        // setHighestUsedId(highestUsedId+1);
-        // console.log("HighestUsedId: " + highestUsedId)
 
         db.transaction(tx => {
             tx.executeSql('INSERT INTO "lists" ("listName") VALUES (?);',
@@ -174,9 +160,6 @@ function ListsScreen({navigation, route}){
     }
 
     const deleteList = useCallback((listId) => {
-        // var data = state.data.filter(item => item.id !== listId);
-        // setState({data: data})
-
         db.transaction(tx => {
             tx.executeSql('DELETE FROM "lists" WHERE "lists"."id"=?;',
             [listId],
@@ -269,12 +252,6 @@ function ListsScreen({navigation, route}){
                 <Dialog.Button label="Cancel" onPress={() => closeAddDialog}/>
                 <Dialog.Button label="Submit" onPress={() => addNewList(listNameInput)}/>
             </Dialog.Container>
-
-            {/* <View style={styles.buttonBox}>
-                <TouchableOpacity style={styles.button} onPress={() => setSearchBarVisible(!searchBarVisible)}>
-                    <IconIon name="md-search" size={64} color="#0097E8" style={styles.buttonIcon}/>
-                </TouchableOpacity>
-            </View> */}
 
             <FloatingAction
                 color='#E85100'

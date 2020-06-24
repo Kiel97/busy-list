@@ -20,7 +20,6 @@ function TodosScreen({navigation, route}){
     const [doneTasksCount, setDoneTasksCount] = React.useState(0)
     const [allTasksCount, setAllTasksCount] = React.useState(0)
     const currentListId = route.params?.listId;
-    // const [highestUsedId, setHighestUsedId] = React.useState(0);        // TEMP: Get rid of this when replacing with SQLite DB
 
     useEffect(() => {
         console.log("TodosScreen: ComponentDidMount")
@@ -34,37 +33,6 @@ function TodosScreen({navigation, route}){
     }, []);
 
     const FetchTodosByListId = (listId) => {
-        // if (listId === 1) {
-        //     var fetchedData = [
-        //         {id: 120, taskName: "Test OK", done: true},
-        //         {id: 121, taskName: "Test NO OK", done: false},
-        //     ]        
-        // }
-        // else if (listId === 2){
-        //     var fetchedData = [
-        //         {id: 220, taskName: "Schabowy", done: true},
-        //         {id: 221, taskName: "Frytki", done: false},
-        //         {id: 222, taskName: "Jajka", done: true},
-        //     ]
-        // }
-        // else if (listId === 3){
-        //     var fetchedData = [
-        //         {id: 320, taskName: "Makiety", done: false},
-        //         {id: 321, taskName: "Szablon bazy", done: false},
-        //         {id: 322, taskName: "Interfejs", done: false},
-        //         {id: 323, taskName: "SQLite", done: false},
-        //         {id: 324, taskName: "Fetch API", done: false}
-        //     ]
-        // }
-        // else if (listId === 4){
-        //     var fetchedData = [
-
-        //     ]
-        // }
-        // else {
-        //     var fetchedData = []
-        // }
-
         db.transaction(tx => {
             tx.executeSql('SELECT * FROM "todos" WHERE "todos"."listId"=?',
             [listId],
@@ -85,7 +53,6 @@ function TodosScreen({navigation, route}){
             console.log('FetchTodosByListId OK')
         }
         );
-        // setHighestUsedId(fetchedData.length+1);
     }
 
     const changeDoneStatus = (todoId) => {
@@ -119,9 +86,6 @@ function TodosScreen({navigation, route}){
             console.log('changeDoneStatus OK')
         }
         );
-
-        // setState({data: state.data})
-        // console.log(todoToChange)
     }
 
     const showAddNewTaskDialog = () => {
@@ -137,11 +101,6 @@ function TodosScreen({navigation, route}){
 
     const addNewTask = (taskName) => {
         const newTaskName = taskName.trim() || "New task"
-        // var data = state.data;
-        // data.push({id: highestUsedId+1, taskName: newTaskName, done: false})
-
-        // setState({data: data})
-        // setHighestUsedId(highestUsedId+1)
         db.transaction(tx => {
             tx.executeSql('INSERT INTO "todos" ("listId", "taskName", "done") VALUES (?,?,?);',
             [currentListId, newTaskName, 0],
@@ -194,9 +153,6 @@ function TodosScreen({navigation, route}){
     })
     
     const deleteTask = useCallback((taskId) => {
-        // var data = state.data.filter(item => item.id !== taskId);
-        // setState({data: data})
-
         db.transaction(tx => {
             tx.executeSql('DELETE FROM "todos" WHERE "todos"."id"=?;',
             [taskId],
