@@ -13,6 +13,8 @@ function ListDetails({navigation, route}) {
     useEffect(() => {
         console.log("ListDetails: ComponentDidMount")
 
+        navigation.setOptions({title: `List Details - ${addOrEdit==="Add" ? "Add mode" : "Edit mode"}`})
+
         return () => {
             console.log("ListDetails: ComponentWillUnmount")
         }
