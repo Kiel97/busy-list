@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, CheckBox } from 'react-native';
 import IconFon from 'react-native-vector-icons/Fontisto';
 
-function ToDoItem(props) {
+function TaskItem(props) {
     const id = props.id;
 
     const notDoneIconName = "checkbox-passive"
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ToDoItem;
+export default TaskItem;
