@@ -101,15 +101,7 @@ function ListsScreen({navigation, route}){
             (tx, results) => {
               console.log("deleteList: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "lists"', [], (tx, results) => {
-                    console.log(`deleteList: Fetched ${results.rows.length} lists`)
-                    var fetchedData = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                      fetchedData.push(results.rows.item(i));
-                    }
-                    setState({data: fetchedData})
-                    setSearchText('')
-                });
+                FetchAllTaskLists();
               }
               else {
                 showAlert('deleteList OK', 'No rows affected')
@@ -133,16 +125,7 @@ function ListsScreen({navigation, route}){
             (tx, results) => {
               console.log("deleteAllLists: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "lists"', [], (tx, results) => {
-                    console.log(`deleteAllLists: Fetched ${results.rows.length} lists`)
-                    var fetchedData = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                      fetchedData.push(results.rows.item(i));
-                    }
-                    setState({data: fetchedData})
-                    setSearchText('')
-                    Toast.show('Successfully removed all lists with tasks');
-                });
+                FetchAllTaskLists()
               }
               else {
                 Toast.show('You have no lists to remove.');
