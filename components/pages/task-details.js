@@ -39,7 +39,14 @@ function TaskDetails({navigation, route}) {
             )
         }, function(error) {
             console.log('fetchAllTaskData ERROR: ' + error.message)
-            showAlert('fetchAllTaskData ERROR', error.message)
+            Alert.alert('fetchAllTaskData ERROR',
+                        error.message,
+                        [
+                            {
+                                text: 'OK',
+                                onPress: () => navigation.goBack(),
+                            },
+                        ])
         }, function() {
             console.log('fetchAllTaskData OK')
         })
