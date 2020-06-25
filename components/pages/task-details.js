@@ -87,8 +87,8 @@ function TaskDetails({navigation, route}) {
     const addNewTaskAndGoBack = (taskName) => {
         const newTaskName = taskName.trim()
         db.transaction(tx => {
-            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done", "note") VALUES (?,?,?,?);',
-            [listId, newTaskName, 0, taskNote],
+            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done", "note", "tag") VALUES (?,?,?,?,?);',
+            [listId, newTaskName, 0, taskNote, selectedTag],
             (tx, results) => {
                 console.log("addNewTaskAndGoBack: Affected", results.rowsAffected)
                 Alert.alert('Add new task',
@@ -116,8 +116,8 @@ function TaskDetails({navigation, route}) {
         const trimmedNewTaskName = newTaskName.trim()
 
         db.transaction(tx => {
-            tx.executeSql('UPDATE "tasks" SET "taskName"=?, "note"=? WHERE "tasks"."id"=?',
-            [trimmedNewTaskName, taskNote, taskId],
+            tx.executeSql('UPDATE "tasks" SET "taskName"=?, "note"=?, "tag"=? WHERE "tasks"."id"=?',
+            [trimmedNewTaskName, taskNote, selectedTag, taskId],
             (tx, results) => {
                 console.log("updateTaskAndGoBack: Affected", results.rowsAffected)
                 Alert.alert('Update task',
@@ -138,6 +138,7 @@ function TaskDetails({navigation, route}) {
     }
 
     const acceptAction = () => {
+        console.log('selectedTag:', selectedTag)
         if (addOrEdit==="Add") {
             addNewTaskAndGoBack(taskName)
         }
