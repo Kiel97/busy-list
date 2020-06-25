@@ -9,23 +9,46 @@ function TaskDetails({navigation, route}) {
     const taskId = route.params?.taskId;
     const listId = route.params?.listId;
     const addOrEdit = route.params?.addOrEdit;
-    const [taskName, setTaskName] = React.useState(route.params?.taskName)
+    const [taskData, setTaskData] = React.useState('')
+    const [taskName, setTaskName] = React.useState('')
+    const [taskNote, setTaskNote] = React.useState('')
 
     useEffect(() => {
         console.log("TaskDetails: ComponentDidMount")
 
         navigation.setOptions({title: `Task Details - ${addOrEdit==="Add" ? "Add mode" : "Edit mode"}`})
+        fetchAllTaskData(taskId)
 
         return () => {
             console.log("TaskDetails: ComponentWillUnmount")
         }
     }, [])
 
+    const fetchAllTaskData = (taskId) => {
+        db.transaction(tx => {
+            tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."id"=?',
+            [taskId],
+            (tx, results) => {
+                const item = results.rows.item(0)
+                console.log("fetchAllTaskData: Fetched", item)
+                setTaskData(item)
+                setTaskName(item.taskName)
+                setTaskNote(item.note)
+            }
+            )
+        }, function(error) {
+            console.log('fetchAllTaskData ERROR: ' + error.message)
+            showAlert('fetchAllTaskData ERROR', error.message)
+        }, function() {
+            console.log('fetchAllTaskData OK')
+        })
+    }
+
     const addNewTaskAndGoBack = (taskName) => {
         const newTaskName = taskName.trim()
         db.transaction(tx => {
-            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done") VALUES (?,?,?);',
-            [listId, newTaskName, 0],
+            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done", "note") VALUES (?,?,?,?);',
+            [listId, newTaskName, 0, taskNote],
             (tx, results) => {
                 console.log("addNewTaskAndGoBack: Affected", results.rowsAffected)
                 Alert.alert('Add new task',
@@ -53,12 +76,12 @@ function TaskDetails({navigation, route}) {
         const trimmedNewTaskName = newTaskName.trim()
 
         db.transaction(tx => {
-            tx.executeSql('UPDATE "tasks" SET "taskName"=? WHERE "tasks"."id"=?',
-            [trimmedNewTaskName, taskId],
+            tx.executeSql('UPDATE "tasks" SET "taskName"=?, "note"=? WHERE "tasks"."id"=?',
+            [trimmedNewTaskName, taskNote, taskId],
             (tx, results) => {
                 console.log("updateTaskAndGoBack: Affected", results.rowsAffected)
-                Alert.alert('Rename task',
-                            'Successfully renamed task',
+                Alert.alert('Update task',
+                            'Successfully updated task',
                             [
                                 {
                                     text: 'OK',
@@ -93,9 +116,11 @@ function TaskDetails({navigation, route}) {
     return (
         <View style={styles.container} >
             <ImageBackground style={styles.blueBackground} source={require('../../assets/images/background4.jpg')} imageStyle={styles.imageStyle}>
-            <Text style={styles.subheaderText}>Task name</Text>
                 <View style={styles.optionsView} >
-                    <TextInput style={styles.textInput} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}></TextInput>
+                    <Text style={styles.subheaderText}>Task name</Text>
+                    <TextInput style={styles.textInput} maxLength={60} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}/>
+                    <Text style={styles.subheaderText}>Note</Text>
+                    <TextInput style={styles.textInput} multiline={true} numberOfLines={5} maxHeight={170} placeholder="Notes for tasks..." value={taskNote} onChangeText={value => setTaskNote(value)} textAlignVertical="top"/>
                 </View>
                 <View style={styles.buttonView}>
                     <TouchableOpacity style={[styles.buttonBase, taskName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={taskName.trim().length < 1} onPress={() => acceptAction()} >
