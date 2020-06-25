@@ -117,7 +117,7 @@ function TaskDetails({navigation, route}) {
     return (
         <View style={styles.container} >
             <ImageBackground style={styles.blueBackground} source={require('../../assets/images/background4.jpg')} imageStyle={styles.imageStyle}>
-                <ScrollView contentContainerStyle={styles.optionsView} >
+                <ScrollView style={styles.optionsView} contentContainerStyle={styles.optionsViewContent} >
                     <Text style={styles.subheaderText}>Task name</Text>
                     <TextInput style={styles.textInput} maxLength={60} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}/>
                     <Text style={styles.subheaderText}>Note</Text>
@@ -187,6 +187,8 @@ const styles = StyleSheet.create({
     },
     optionsView: {
         flex: 1,
+    },
+    optionsViewContent:{
         alignSelf: 'stretch',
         justifyContent: 'flex-start',
     },
