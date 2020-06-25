@@ -118,7 +118,9 @@ function ListDetails({navigation, route}) {
             <Text style={styles.subheaderText}>List name</Text>
                 <ScrollView style={styles.optionsView} contentContainerStyle={styles.optionsViewContent} >
                     <TextInput style={styles.textInput} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
+                    { addOrEdit==="Edit" && 
                     <Text style={styles.subheaderText}>Created: {listData.created}</Text>
+                    }
                 </ScrollView>
                 <View style={styles.buttonView}>
                     <TouchableOpacity style={[styles.buttonBase, listName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={listName.trim().length < 1} onPress={() => acceptOption()} >
