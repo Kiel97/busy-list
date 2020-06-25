@@ -90,18 +90,7 @@ function TasksScreen({navigation, route}){
             (tx, results) => {
                 console.log("changeDoneStatus: Affected " + results.rowsAffected);
                 if (results.rowsAffected > 0){
-                  tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
-                  [currentListId],
-                  (tx, results) => {
-                  var fetchedData = [];
-                  console.log(`changeDoneStatus: Fetched ${results.rows.length} tasks`)
-                  for (let i = 0; i < results.rows.length; ++i) {
-                      fetchedData.push(results.rows.item(i));
-                  }
-                  setState({data: fetchedData})
-                  setAllTasksCount(fetchedData.length)
-                  setDoneTasksCount(fetchedData.filter(item => item.done === 1).length)
-                  });
+                  FetchTasksByListId(currentListId)
               }
               });
         }, function(error) {
@@ -121,18 +110,7 @@ function TasksScreen({navigation, route}){
             (tx, results) => {
               console.log("addNewTask: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
-                [currentListId],
-                (tx, results) => {
-                var fetchedData = [];
-                console.log(`addNewTask: Fetched ${results.rows.length} tasks`)
-                for (let i = 0; i < results.rows.length; ++i) {
-                    fetchedData.push(results.rows.item(i));
-                }
-                setState({data: fetchedData})
-                setAllTasksCount(fetchedData.length)
-                setDoneTasksCount(fetchedData.filter(item => item.done === 1).length)
-                });
+                FetchTasksByListId(currentListId)
             }
             });
         }, function(error) {
@@ -189,18 +167,7 @@ function TasksScreen({navigation, route}){
             (tx, results) => {
               console.log("deleteTask: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
-                [currentListId],
-                (tx, results) => {
-                var fetchedData = [];
-                console.log(`deleteTask: Fetched ${results.rows.length} tasks`)
-                for (let i = 0; i < results.rows.length; ++i) {
-                    fetchedData.push(results.rows.item(i));
-                }
-                setState({data: fetchedData})
-                setAllTasksCount(fetchedData.length)
-                setDoneTasksCount(fetchedData.filter(item => item.done === 1).length)
-                });
+                FetchTasksByListId(currentListId)
               }
               else {
                 showAlert('deleteTask OK', 'No rows affected')
@@ -224,20 +191,7 @@ function TasksScreen({navigation, route}){
             (tx, results) => {
               console.log("deleteAllTasks: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
-                [currentListId],
-                (tx, results) => {
-                var fetchedData = [];
-                console.log(`deleteAllTasks: Fetched ${results.rows.length} tasks`)
-                for (let i = 0; i < results.rows.length; ++i) {
-                    fetchedData.push(results.rows.item(i));
-                }
-                setState({data: fetchedData})
-                setAllTasksCount(fetchedData.length)
-                setDoneTasksCount(fetchedData.filter(item => item.done === 1).length)
-
-                Toast.show('Successfully removed all tasks.');
-                });
+                FetchTasksByListId(currentListId)
               }
               else {
                 Toast.show('Your list is empty. No tasks to delete.')
