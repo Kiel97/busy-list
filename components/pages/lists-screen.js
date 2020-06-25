@@ -35,17 +35,12 @@ function ListsScreen({navigation, route}){
             <HeaderButtons>
               <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
                 <HiddenItem title="Delete all lists" onPress={showDeleteEverythingDialog} />
-                <HiddenItem title="App Options" onPress={showAppOptions} />
                 <HiddenItem title="Help" onPress={showAppHelp} />
               </OverflowMenu>
             </HeaderButtons>
           ),
         });
       }, [navigation]);
-
-    const showAppOptions = () => {
-        alert('Opcje ekranu ListsScreen')
-    }
 
     const showAppHelp = () => {
         alert('Pomoc')
