@@ -4,6 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Toast from 'react-native-simple-toast';
 import { openDatabase } from 'react-native-sqlite-storage';
 import { FloatingAction } from "react-native-floating-action";
+import DropDownPicker from 'react-native-dropdown-picker';
 import Dialog from "react-native-dialog";
 import IconIon from 'react-native-vector-icons/Ionicons';
 import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
@@ -19,6 +20,12 @@ function TasksScreen({navigation, route}){
     const [fetchIndicator, setFetchIndicator] = React.useState(false)
     const [doneTasksCount, setDoneTasksCount] = React.useState(0)
     const [allTasksCount, setAllTasksCount] = React.useState(0)
+    const [doneFilter, setDoneFilter] = React.useState(2)
+    const availableDoneFilters = [
+        {label: "Both", value: 2},
+        {label: "Done Only", value: 1},
+        {label: "Not Done Only", value: 0},
+    ]   
 
     const currentListId = route.params?.listId;
     const currentListName = route.params?.listName;
@@ -57,10 +64,14 @@ function TasksScreen({navigation, route}){
         alert('Pomoc')
     }
 
-    const FetchTasksByListId = (listId) => {
+    const FetchTasksByListId = (listId, filter=doneFilter) => {
+        var d0, d1
+        if (filter===0){d0 = 0; d1 = 0;}
+        else if (filter===1){d0 = 1; d1 = 1;}
+        else {d0 = 0; d1 = 1;}
         db.transaction(tx => {
-            tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
-            [listId],
+            tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=? AND "tasks"."done" IN (?,?)',
+            [listId, d0, d1],
             (tx, results) => {
               var fetchedData = [];
               console.log(`FetchTasksByListId: Fetched ${results.rows.length} tasks`)
@@ -238,10 +249,25 @@ function TasksScreen({navigation, route}){
             ],
             { cancelable: false }
         )
-    }  
+    }
+    
+    const updateDoneFilter = (filter) => {
+        setDoneFilter(filter)
+        FetchTasksByListId(currentListId, filter)
+    }
 
     return (
         <ImageBackground style={styles.container} source={require('../../assets/images/background1.jpg')} imageStyle={styles.imageStyle}>
+            <View style={styles.filterBars}>
+                <DropDownPicker
+                    items={availableDoneFilters}
+                    defaultValue={doneFilter}
+                    containerStyle={{ height: 40 }}
+                    style={{ backgroundColor: '#fafafa' }}
+                    dropDownStyle={{ backgroundColor: '#fafafa' }}
+                    onChangeItem={item => updateDoneFilter(item.value)}
+                />
+            </View>
             <View style={styles.topInfoView}>
                 <Text style={styles.textCounter}>Completed Tasks: {doneTasksCount}/{allTasksCount}</Text>
                 <ActivityIndicator animating={fetchIndicator} size={'large'} color="#fff" />
@@ -338,6 +364,9 @@ const styles = StyleSheet.create({
     imageStyle: {
         opacity: 0.1,
     },
+    filterBars: {
+        alignSelf: 'stretch',
+    }
 });
 
 export default TasksScreen;
