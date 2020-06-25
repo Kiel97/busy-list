@@ -18,7 +18,7 @@ function TaskDetails({navigation, route}) {
     const [selectedTag, setSelectedTag] = React.useState('')
     const availableTags = [
         {label: "No tag", value: ""},
-        {label: "Educational", value: "educational"},
+        {label: "Education", value: "education"},
         {label: "Recreational", value: "recreational"},
         {label: "Social", value: "social"},
         {label: "Do It Yourself", value: "diy"},
