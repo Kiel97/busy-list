@@ -55,7 +55,7 @@ function ListsScreen({navigation, route}){
         else{
             var fetchedData = [];
             db.transaction(tx => {
-                tx.executeSql('SELECT DISTINCT "lists"."id", "lists"."listName" FROM "lists" JOIN "tasks" ON "lists"."id"="tasks"."listId" WHERE "lists"."listName" LIKE ? OR "tasks"."taskName" LIKE ?',
+                tx.executeSql('SELECT DISTINCT "lists"."id", "lists"."listName", "lists"."favourite" FROM "lists" JOIN "tasks" ON "lists"."id"="tasks"."listId" WHERE "lists"."listName" LIKE ? OR "tasks"."taskName" LIKE ? ORDER BY "lists"."favourite" DESC, "lists"."created" ASC',
                 [`%${newText}%`, `%${newText}%`],
                 (tx, results) => {
                   console.log(`updateSearchText: Fetched ${results.rows.length} lists`)
@@ -78,7 +78,7 @@ function ListsScreen({navigation, route}){
         console.log("Fetching All Task Lists...")
         var fetchedData = [];
         db.transaction(tx => {
-            tx.executeSql('SELECT * FROM "lists"', [], (tx, results) => {
+            tx.executeSql('SELECT "id", "listName", "favourite" FROM "lists" ORDER BY "favourite" DESC, "created" ASC', [], (tx, results) => {
               console.log(`FetchAllTaskLists: Fetched ${results.rows.length} lists`)
               for (let i = 0; i < results.rows.length; ++i) {
                 fetchedData.push(results.rows.item(i));
