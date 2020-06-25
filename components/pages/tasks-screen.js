@@ -18,8 +18,7 @@ function TasksScreen({navigation, route}){
         data: []
     });
     const [fetchIndicator, setFetchIndicator] = React.useState(false)
-    const [doneTasksCount, setDoneTasksCount] = React.useState(0)
-    const [allTasksCount, setAllTasksCount] = React.useState(0)
+    const [tasksCount, setTasksCount] = React.useState(0)
     const [doneFilter, setDoneFilter] = React.useState(2)
     const availableDoneFilters = [
         {label: "Both", value: 2},
@@ -79,8 +78,7 @@ function TasksScreen({navigation, route}){
                 fetchedData.push(results.rows.item(i));
               }
               setState({data: fetchedData})
-              setAllTasksCount(fetchedData.length)
-              setDoneTasksCount(fetchedData.filter(item => item.done === 1).length)
+              setTasksCount(fetchedData.length)
             });
         }, function(error) {
             console.log('FetchTasksByListId ERROR: ' + error.message)
@@ -269,7 +267,7 @@ function TasksScreen({navigation, route}){
                 />
             </View>
             <View style={styles.topInfoView}>
-                <Text style={styles.textCounter}>Completed Tasks: {doneTasksCount}/{allTasksCount}</Text>
+                <Text style={styles.textCounter}>Visible Tasks: {tasksCount}</Text>
                 <ActivityIndicator animating={fetchIndicator} size={'large'} color="#fff" />
             </View>
             <FlatList style={styles.scrollViewOfLists}
