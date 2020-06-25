@@ -92,9 +92,8 @@ function TaskDetails({navigation, route}) {
 
     return (
         <View style={styles.container} >
-            <Text style={styles.modeText}>{addOrEdit==='Add' ? 'Add mode' : 'Edit mode'}</Text>
-            
             <ImageBackground style={styles.blueBackground} source={require('../../assets/images/background4.jpg')} imageStyle={styles.imageStyle}>
+            <Text style={styles.subheaderText}>Task name</Text>
                 <View style={styles.optionsView} >
                     <TextInput style={styles.textInput} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}></TextInput>
                 </View>
@@ -151,8 +150,8 @@ const styles = StyleSheet.create({
         color: "#111",
         fontSize: 25,
     },
-    modeText: {
-        color: "#0097E8",
+    subheaderText: {
+        color: "#fff",
         fontSize: 20,
         fontWeight: 'bold',
         margin: 5,
