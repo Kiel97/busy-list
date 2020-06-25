@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, TouchableOpacity } from 'react-native'
 import { openDatabase } from 'react-native-sqlite-storage';
 import IconAnt from 'react-native-vector-icons/AntDesign';
+import { Picker } from '@react-native-community/picker';
 
 const db = openDatabase("busylist.db");
 
