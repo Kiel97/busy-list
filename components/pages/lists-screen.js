@@ -17,7 +17,6 @@ function ListsScreen({navigation, route}){
     
     const [state, setState] = React.useState({});
     const [searchText, setSearchText] = React.useState('');
-    const [searchBarVisible, setSearchBarVisible] = React.useState(false);
 
     useEffect(() => {
         console.log("ListsScreen: ComponentDidMount")
@@ -35,7 +34,6 @@ function ListsScreen({navigation, route}){
           headerRight: () => (
             <HeaderButtons>
               <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
-                <HiddenItem title="Toggle Search Bar..." onPress={toggleSearchBarVisibility} />
                 <HiddenItem title="Delete all lists" onPress={showDeleteEverythingDialog} />
                 <HiddenItem title="App Options" onPress={showAppOptions} />
                 <HiddenItem title="Help" onPress={showAppHelp} />
@@ -44,10 +42,6 @@ function ListsScreen({navigation, route}){
           ),
         });
       }, [navigation]);
-    
-    const toggleSearchBarVisibility = () => {
-        setSearchBarVisible(searchBarVisible => !searchBarVisible)
-    }
 
     const showAppOptions = () => {
         alert('Opcje ekranu ListsScreen')
@@ -221,13 +215,12 @@ function ListsScreen({navigation, route}){
     return (
         <ImageBackground style={styles.container} source={require('../../assets/images/background2.jpg')} imageStyle={styles.imageStyle}>
             <View style={styles.searchBarView}>
-                { searchBarVisible &&
                 <SearchBar placeholder="Search for lists or tasks..."
                     onChangeText={updateSearchText}
                     value={searchText}
                     lightTheme={true}
                     placeholderTextColor="#0097E8"
-                    platform="android"/>}
+                    platform="android"/>
             </View>
             <FlatList style={styles.scrollViewOfLists}
                 data={state.data}
