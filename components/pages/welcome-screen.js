@@ -19,7 +19,7 @@ function WelcomeScreen({navigation, route}){
             txn.executeSql('DROP TABLE IF EXISTS "lists"', []);
             txn.executeSql('DROP TABLE IF EXISTS "tasks"', []);
             txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS "lists"("id" INTEGER NOT NULL UNIQUE,"listName" TEXT NOT NULL, "favourite" INTEGER NOT NULL DEFAULT 0 CHECK ("favourite"=0 or "favourite"=1), created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY("id" AUTOINCREMENT));',
+              'CREATE TABLE IF NOT EXISTS "lists"("id" INTEGER NOT NULL UNIQUE,"listName" TEXT NOT NULL, "favourite" INTEGER NOT NULL DEFAULT 0 CHECK ("favourite"=0 or "favourite"=1), "created" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY("id" AUTOINCREMENT));',
               []
             );
             txn.executeSql(
