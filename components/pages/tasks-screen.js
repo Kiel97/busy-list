@@ -102,11 +102,13 @@ function TasksScreen({navigation, route}){
         );
     }
 
-    const addNewTask = (taskName) => {
-        const newTaskName = taskName.trim() || "New task"
+    const addNewTaskFromBoredAPI = (boredAPIJson) => {
+        const activity = boredAPIJson.activity.trim() || "New task"
+        const tag = boredAPIJson.type.trim() || ''
+
         db.transaction(tx => {
-            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done") VALUES (?,?,?);',
-            [currentListId, newTaskName, 0],
+            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done", "tag") VALUES (?,?,?,?);',
+            [currentListId, activity, 0, tag],
             (tx, results) => {
               console.log("addNewTask: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
@@ -214,7 +216,7 @@ function TasksScreen({navigation, route}){
           const response = await fetch('http://www.boredapi.com/api/activity/');
           const jayson = await response.json()
           console.log(jayson.activity);
-          addNewTask(jayson.activity);
+          addNewTaskFromBoredAPI(jayson);
           setFetchIndicator(false)
         }
         catch (err) {

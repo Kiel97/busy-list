@@ -145,6 +145,8 @@ function TaskDetails({navigation, route}) {
                 <ScrollView style={styles.optionsView} contentContainerStyle={styles.optionsViewContent} >
                     <Text style={styles.subheaderText}>Task name</Text>
                     <TextInput style={styles.textInput} maxLength={60} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}/>
+                    <Text style={styles.subheaderText}>Tag (if any)</Text>
+                    { addOrEdit==="Edit" && <Text style={styles.subheaderText}>{taskData.tag}</Text>}
                     <Text style={styles.subheaderText}>Note</Text>
                     <TextInput style={styles.textInput} multiline={true} numberOfLines={5} maxHeight={170} placeholder="Notes for tasks..." value={taskNote} onChangeText={value => setTaskNote(value)} textAlignVertical="top"/>
                     { addOrEdit==="Edit" &&
