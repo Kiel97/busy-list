@@ -9,7 +9,7 @@ import { SearchBar } from 'react-native-elements'
 import { FloatingAction } from "react-native-floating-action";
 import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
 
-import ToDoListItem from '../todo-list-item';
+import TaskListItem from '../task-list-item';
 
 const db = openDatabase("busylist.db");
 
@@ -23,7 +23,7 @@ function ListsScreen({navigation, route}){
         console.log("ListsScreen: ComponentDidMount")
         const unsubscribe = navigation.addListener('focus', () => {
             console.log("Refresh list")
-            FetchAllTodoLists();
+            FetchAllTaskLists();
 
         });
         
@@ -62,7 +62,7 @@ function ListsScreen({navigation, route}){
         setSearchText(newText)
 
         if (!newText)
-            FetchAllTodoLists();
+            FetchAllTaskLists();
         else{
             var fetchedData = [];
             db.transaction(tx => {
@@ -85,22 +85,22 @@ function ListsScreen({navigation, route}){
         }
     }
 
-    const FetchAllTodoLists = () => {
-        console.log("Fetching All ToDo Lists...")
+    const FetchAllTaskLists = () => {
+        console.log("Fetching All Task Lists...")
         var fetchedData = [];
         db.transaction(tx => {
             tx.executeSql('SELECT * FROM "lists"', [], (tx, results) => {
-              console.log(`FetchAllTodoLists: Fetched ${results.rows.length} lists`)
+              console.log(`FetchAllTaskLists: Fetched ${results.rows.length} lists`)
               for (let i = 0; i < results.rows.length; ++i) {
                 fetchedData.push(results.rows.item(i));
               }
               setState({data: fetchedData})
               });
         }, function(error) {
-            console.log('FetchAllTodoLists ERROR: ' + error.message)
-            showAlert('FetchAllTodoLists ERROR', error.message)
+            console.log('FetchAllTaskLists ERROR: ' + error.message)
+            showAlert('FetchAllTaskLists ERROR', error.message)
         }, function() {
-            console.log('FetchAllTodoLists OK')
+            console.log('FetchAllTaskLists OK')
         }
         );
     }
@@ -234,8 +234,8 @@ function ListsScreen({navigation, route}){
                 extraData={state.data}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
-                    <ToDoListItem id={item.id} listName={item.listName}
-                        onPress={()=>navigation.navigate('Your Todos', {listId: item.id, listName: item.listName})}
+                    <TaskListItem id={item.id} listName={item.listName}
+                        onPress={()=>navigation.navigate('Your Tasks', {listId: item.id, listName: item.listName})}
                         onLongPress={() => showDeleteDialog(item.id, item.listName)}
                     />)}
             />

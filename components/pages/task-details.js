@@ -5,31 +5,31 @@ import IconAnt from 'react-native-vector-icons/AntDesign';
 
 const db = openDatabase("busylist.db");
 
-function ListDetails({navigation, route}) {
+function TaskDetails({navigation, route}) {
+    const taskId = route.params?.taskId;
     const listId = route.params?.listId;
     const addOrEdit = route.params?.addOrEdit;
-    const [listName, setListName] = React.useState(route.params?.listName)
+    const [taskName, setTaskName] = React.useState(route.params?.taskName)
 
     useEffect(() => {
-        console.log("ListDetails: ComponentDidMount")
+        console.log("TaskDetails: ComponentDidMount")
 
-        navigation.setOptions({title: `List Details - ${addOrEdit==="Add" ? "Add mode" : "Edit mode"}`})
+        navigation.setOptions({title: `Task Details - ${addOrEdit==="Add" ? "Add mode" : "Edit mode"}`})
 
         return () => {
-            console.log("ListDetails: ComponentWillUnmount")
+            console.log("TaskDetails: ComponentWillUnmount")
         }
     }, [])
 
-    const addNewListAndGoBack = (listName) => {
-        const newListName = listName.trim()
-
+    const addNewTaskAndGoBack = (taskName) => {
+        const newTaskName = taskName.trim()
         db.transaction(tx => {
-            tx.executeSql('INSERT INTO "lists" ("listName") VALUES (?);',
-            [newListName],
+            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done") VALUES (?,?,?);',
+            [listId, newTaskName, 0],
             (tx, results) => {
-              console.log("addNewListAndGoBack: Affected " + results.rowsAffected);
-              Alert.alert('Add new list',
-                            'Successfully add new list',
+                console.log("addNewTaskAndGoBack: Affected", results.rowsAffected)
+                Alert.alert('Add new task',
+                            'Successfully added new task',
                             [
                                 {
                                     text: 'OK',
@@ -37,52 +37,57 @@ function ListDetails({navigation, route}) {
                                 },
                             ]
                         )
-            }
-            );
+            })
         }, function(error) {
-            console.log('addNewListAndGoBack ERROR: ' + error.message)
+            console.log('addNewTaskAndGoBack ERROR: ' + error.message)
+            showAlert('addNewTaskAndGoBack ERROR', error.message)
         }, function() {
-            console.log('addNewListAndGoBack OK')
-        });
+            console.log('addNewTaskAndGoBack OK')
+        }
+        );
     }
 
-    const updateListAndGoBack = (newListName) => {
-        console.log('updateListAndGoBack')
+    const updateTaskAndGoBack = (newTaskName) => {
+        console.log('updateTaskAndGoBack')
 
-        const trimmedNewListName = newListName.trim()
+        const trimmedNewTaskName = newTaskName.trim()
 
         db.transaction(tx => {
-            tx.executeSql('UPDATE "lists" SET "listName"=? WHERE "lists"."id"=?',
-            [trimmedNewListName, listId],
+            tx.executeSql('UPDATE "tasks" SET "taskName"=? WHERE "tasks"."id"=?',
+            [trimmedNewTaskName, taskId],
             (tx, results) => {
-                console.log("updateListAndGoBack: Affected", results.rowsAffected)
-                Alert.alert('Rename list',
-                            'Successfully renamed list',
+                console.log("updateTaskAndGoBack: Affected", results.rowsAffected)
+                Alert.alert('Rename task',
+                            'Successfully renamed task',
                             [
                                 {
                                     text: 'OK',
-                                    onPress: () => navigation.navigate('Your Tasks', {listId: listId, listName: trimmedNewListName}),
+                                    onPress: () => navigation.goBack(),
                                 },
                             ]
                         )
             })
         }, function(error) {
-            console.log('updateListAndGoBack ERROR: ' + error.message)
+            console.log('updateTaskAndGoBack ERROR: ' + error.message)
         }, function() {
-            console.log('updateListAndGoBack OK')
+            console.log('updateTaskAndGoBack OK')
         })
     }
 
-    const acceptOption = () => {
-        if (addOrEdit==="Add"){
-            addNewListAndGoBack(listName)
+    const acceptAction = () => {
+        if (addOrEdit==="Add") {
+            addNewTaskAndGoBack(taskName)
         }
         else if (addOrEdit==="Edit"){
-            updateListAndGoBack(listName)
+            updateTaskAndGoBack(taskName)
         }
-        else{
+        else {
             console.log("Unknown addOrEdit status:", addOrEdit)
         }
+    }
+
+    const rejectAction = () => {
+        navigation.goBack()
     }
 
     return (
@@ -91,14 +96,14 @@ function ListDetails({navigation, route}) {
             
             <View style={styles.blueBackground}>
                 <View style={styles.optionsView} >
-                    <TextInput style={styles.textInput} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
+                    <TextInput style={styles.textInput} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}></TextInput>
                 </View>
                 <View style={styles.buttonView}>
-                    <TouchableOpacity style={[styles.buttonBase, listName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={listName.trim().length < 1} onPress={() => acceptOption()} >
+                    <TouchableOpacity style={[styles.buttonBase, taskName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={taskName.trim().length < 1} onPress={() => acceptAction()} >
                         <IconAnt name="check" size={40} color="#fff" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.buttonBase, styles.buttonActive, styles.shadow]} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity style={[styles.buttonBase, styles.buttonActive, styles.shadow]} onPress={() => rejectAction()}>
                         <IconAnt name="close" size={40} color="#fff" />
                     </TouchableOpacity>
                 </View>
@@ -169,4 +174,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ListDetails
+export default TaskDetails
