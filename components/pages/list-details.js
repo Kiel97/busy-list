@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, TouchableOpacity, ScrollView } from 'react-native'
 import { openDatabase } from 'react-native-sqlite-storage';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 
@@ -116,10 +116,10 @@ function ListDetails({navigation, route}) {
         <View style={styles.container}>
             <ImageBackground style={styles.blueBackground}  source={require('../../assets/images/background3.jpg')} imageStyle={styles.imageStyle}>
             <Text style={styles.subheaderText}>List name</Text>
-                <View style={styles.optionsView} >
+                <ScrollView style={styles.optionsView} contentContainerStyle={styles.optionsViewContent} >
                     <TextInput style={styles.textInput} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
                     <Text style={styles.subheaderText}>Created: {listData.created}</Text>
-                </View>
+                </ScrollView>
                 <View style={styles.buttonView}>
                     <TouchableOpacity style={[styles.buttonBase, listName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={listName.trim().length < 1} onPress={() => acceptOption()} >
                         <IconAnt name="check" size={40} color="#fff" />
@@ -181,6 +181,8 @@ const styles = StyleSheet.create({
     },
     optionsView: {
         flex: 1,
+    },
+    optionsViewContent: {
         alignSelf: 'stretch',
         justifyContent: 'flex-start',
     },
