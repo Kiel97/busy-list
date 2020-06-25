@@ -8,17 +8,44 @@ const db = openDatabase("busylist.db");
 function ListDetails({navigation, route}) {
     const listId = route.params?.listId;
     const addOrEdit = route.params?.addOrEdit;
+    const [listData, setListData] = React.useState('')
     const [listName, setListName] = React.useState(route.params?.listName)
 
     useEffect(() => {
         console.log("ListDetails: ComponentDidMount")
 
         navigation.setOptions({title: `List Details - ${addOrEdit==="Add" ? "Add mode" : "Edit mode"}`})
+        fetchAllListData(listId)
 
         return () => {
             console.log("ListDetails: ComponentWillUnmount")
         }
     }, [])
+
+    const fetchAllListData = (listId) => {
+        db.transaction(tx => {
+            tx.executeSql('SELECT * FROM "lists" WHERE "lists"."id"=?',
+            [listId],
+            (tx, results) => {
+                const item = results.rows.item(0)
+                console.log("fetchAllListData: Fetched", item)
+                setListData(item)
+                setListName(item.listName)
+            })
+        }, function(error) {
+            console.log('fetchAllListData ERROR:', error.message)
+            Alert.alert('fetchAllListData ERROR',
+                        error.message,
+                        [
+                            {
+                                text: 'OK',
+                                onPress: () => navigation.goBack(),
+                            },
+                        ])
+        }, function() {
+            console.log('fetchAllListData OK')
+        })
+    }
 
     const addNewListAndGoBack = (listName) => {
         const newListName = listName.trim()
@@ -91,6 +118,7 @@ function ListDetails({navigation, route}) {
             <Text style={styles.subheaderText}>List name</Text>
                 <View style={styles.optionsView} >
                     <TextInput style={styles.textInput} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
+                    <Text style={styles.subheaderText}>Created: {listData.created}</Text>
                 </View>
                 <View style={styles.buttonView}>
                     <TouchableOpacity style={[styles.buttonBase, listName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={listName.trim().length < 1} onPress={() => acceptOption()} >
