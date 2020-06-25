@@ -9,7 +9,7 @@ function TaskItem(props) {
     const doneIconName = "checkbox-active"
 
     return(
-        <TouchableOpacity style={[styles.listItem, styles.shadow]} onPress={props.onPress} onLongPress={props.onLongPress} delayLongPress={600} activeOpacity={0.5}>
+        <TouchableOpacity style={[styles.listItem, styles.shadow]} onPress={props.onPress} onLongPress={props.onLongPress} delayLongPress={400} activeOpacity={0.5}>
             <IconFon onPress={props.onCheckmarkPress} name={props.done ? doneIconName : notDoneIconName} color="#0097E8" size={32} style={styles.checkbox} />
             <Text style={styles.listItemText}>{props.taskName}</Text>
         </TouchableOpacity>
