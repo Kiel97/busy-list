@@ -10,20 +10,20 @@ function WelcomeScreen({navigation, route}){
   React.useEffect(() => {
     db.transaction(function(txn) {
       txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND (name='lists' OR name='todos')",
+        "SELECT name FROM sqlite_master WHERE type='table' AND (name='lists' OR name='tasks')",
         [],
         function(tx, res) {
           console.log('SQLite tables amount:', res.rows.length);
           console.log('SQLite forceDBReinit:', forceDBReinit);
           if (res.rows.length < 2 || forceDBReinit) {
             txn.executeSql('DROP TABLE IF EXISTS "lists"', []);
-            txn.executeSql('DROP TABLE IF EXISTS "todos"', []);
+            txn.executeSql('DROP TABLE IF EXISTS "tasks"', []);
             txn.executeSql(
               'CREATE TABLE IF NOT EXISTS "lists"("id" INTEGER NOT NULL UNIQUE,"listName" TEXT NOT NULL, PRIMARY KEY("id" AUTOINCREMENT));',
               []
             );
             txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS "todos"("id" INTEGER NOT NULL UNIQUE, "listId" INTEGER NOT NULL, "taskName" TEXT NOT NULL, "done" INTEGER NOT NULL DEFAULT 0 CHECK("done"=0 OR "done"=1), PRIMARY KEY("id" AUTOINCREMENT), FOREIGN KEY("listId") REFERENCES "lists"("id") ON DELETE CASCADE);',
+              'CREATE TABLE IF NOT EXISTS "tasks"("id" INTEGER NOT NULL UNIQUE, "listId" INTEGER NOT NULL, "taskName" TEXT NOT NULL, "done" INTEGER NOT NULL DEFAULT 0 CHECK("done"=0 OR "done"=1), PRIMARY KEY("id" AUTOINCREMENT), FOREIGN KEY("listId") REFERENCES "lists"("id") ON DELETE CASCADE);',
               []
             );
             if (prepopulateDB) {
@@ -39,7 +39,7 @@ function WelcomeScreen({navigation, route}){
                 }
               );
               tx.executeSql(
-                'INSERT INTO "todos" ("id", "listId", "taskName", "done") VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)',
+                'INSERT INTO "tasks" ("id", "listId", "taskName", "done") VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)',
                 [
                   1, 1, 'Przygotowanie sprawozdania końcowego', 1,
                   2, 1, 'Organizacja spotkania w firmie', 0,
@@ -54,9 +54,9 @@ function WelcomeScreen({navigation, route}){
                 ],
                 (tx, results) => {
                   if (results.rowsAffected > 0) {
-                    console.log('Prepopulate "todos": Insert success');
+                    console.log('Prepopulate "tasks": Insert success');
                   } else {
-                    console.log('Prepopulate "todos": Insert failed');
+                    console.log('Prepopulate "tasks": Insert failed');
                   }
                 }
               );

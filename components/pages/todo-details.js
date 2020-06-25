@@ -24,7 +24,7 @@ function TodoDetails({navigation, route}) {
     const addNewTaskAndGoBack = (taskName) => {
         const newTaskName = taskName.trim()
         db.transaction(tx => {
-            tx.executeSql('INSERT INTO "todos" ("listId", "taskName", "done") VALUES (?,?,?);',
+            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done") VALUES (?,?,?);',
             [listId, newTaskName, 0],
             (tx, results) => {
                 console.log("addNewTaskAndGoBack: Affected", results.rowsAffected)
@@ -53,7 +53,7 @@ function TodoDetails({navigation, route}) {
         const trimmedNewTaskName = newTaskName.trim()
 
         db.transaction(tx => {
-            tx.executeSql('UPDATE "todos" SET "taskName"=? WHERE "todos"."id"=?',
+            tx.executeSql('UPDATE "tasks" SET "taskName"=? WHERE "tasks"."id"=?',
             [trimmedNewTaskName, taskId],
             (tx, results) => {
                 console.log("updateTaskAndGoBack: Affected", results.rowsAffected)

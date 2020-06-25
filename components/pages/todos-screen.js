@@ -59,7 +59,7 @@ function TodosScreen({navigation, route}){
 
     const FetchTodosByListId = (listId) => {
         db.transaction(tx => {
-            tx.executeSql('SELECT * FROM "todos" WHERE "todos"."listId"=?',
+            tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
             [listId],
             (tx, results) => {
               var fetchedData = [];
@@ -85,12 +85,12 @@ function TodosScreen({navigation, route}){
         currentDoneState = currentDoneState == 1 ? 0 : 1;
         console.log("todoId:", todoId, ",currentDoneState:", currentDoneState)
         db.transaction(tx => {
-            tx.executeSql('UPDATE "todos" SET "done"=? WHERE "todos"."id"=?',
+            tx.executeSql('UPDATE "tasks" SET "done"=? WHERE "tasks"."id"=?',
             [currentDoneState, todoId],
             (tx, results) => {
                 console.log("changeDoneStatus: Affected " + results.rowsAffected);
                 if (results.rowsAffected > 0){
-                  tx.executeSql('SELECT * FROM "todos" WHERE "todos"."listId"=?',
+                  tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
                   [currentListId],
                   (tx, results) => {
                   var fetchedData = [];
@@ -116,12 +116,12 @@ function TodosScreen({navigation, route}){
     const addNewTask = (taskName) => {
         const newTaskName = taskName.trim() || "New task"
         db.transaction(tx => {
-            tx.executeSql('INSERT INTO "todos" ("listId", "taskName", "done") VALUES (?,?,?);',
+            tx.executeSql('INSERT INTO "tasks" ("listId", "taskName", "done") VALUES (?,?,?);',
             [currentListId, newTaskName, 0],
             (tx, results) => {
               console.log("addNewTask: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "todos" WHERE "todos"."listId"=?',
+                tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
                 [currentListId],
                 (tx, results) => {
                 var fetchedData = [];
@@ -184,12 +184,12 @@ function TodosScreen({navigation, route}){
     
     const deleteTask = useCallback((taskId) => {
         db.transaction(tx => {
-            tx.executeSql('DELETE FROM "todos" WHERE "todos"."id"=?;',
+            tx.executeSql('DELETE FROM "tasks" WHERE "tasks"."id"=?;',
             [taskId],
             (tx, results) => {
               console.log("deleteTask: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "todos" WHERE "todos"."listId"=?',
+                tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
                 [currentListId],
                 (tx, results) => {
                 var fetchedData = [];
@@ -219,12 +219,12 @@ function TodosScreen({navigation, route}){
 
     const deleteAllTasks = useCallback((listId) => {
         db.transaction(tx => {
-            tx.executeSql('DELETE FROM "todos" WHERE "todos"."listId"=?;',
+            tx.executeSql('DELETE FROM "tasks" WHERE "tasks"."listId"=?;',
             [listId],
             (tx, results) => {
               console.log("deleteAllTasks: Affected " + results.rowsAffected);
               if (results.rowsAffected > 0){
-                tx.executeSql('SELECT * FROM "todos" WHERE "todos"."listId"=?',
+                tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=?',
                 [currentListId],
                 (tx, results) => {
                 var fetchedData = [];

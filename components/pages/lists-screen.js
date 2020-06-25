@@ -66,7 +66,7 @@ function ListsScreen({navigation, route}){
         else{
             var fetchedData = [];
             db.transaction(tx => {
-                tx.executeSql('SELECT DISTINCT "lists"."id", "lists"."listName" FROM "lists" JOIN "todos" ON "lists"."id"="todos"."listId" WHERE "lists"."listName" LIKE ? OR "todos"."taskName" LIKE ?',
+                tx.executeSql('SELECT DISTINCT "lists"."id", "lists"."listName" FROM "lists" JOIN "tasks" ON "lists"."id"="tasks"."listId" WHERE "lists"."listName" LIKE ? OR "tasks"."taskName" LIKE ?',
                 [`%${newText}%`, `%${newText}%`],
                 (tx, results) => {
                   console.log(`updateSearchText: Fetched ${results.rows.length} lists`)
