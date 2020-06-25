@@ -140,6 +140,28 @@ function ListsScreen({navigation, route}){
         );
     })
 
+    const changeFavouriteStatus = (listId) => {
+        let currentFavouriteState = (state.data.find(item => item.id === listId)).favourite
+        currentFavouriteState = currentFavouriteState == 1 ? 0 : 1
+        console.log("listId:", listId, ",currentFavouriteState:", currentFavouriteState)
+        db.transaction(tx => {
+            tx.executeSql('UPDATE "lists" SET "favourite"=? WHERE "lists"."id"=?',
+            [currentFavouriteState, listId],
+            (tx, results) => {
+                console.log("changeFavouriteStatus: Affected", results.rowsAffected)
+                if (results.rowsAffected > 0){
+                    FetchAllTaskLists()
+                }
+            })
+        }, function(error){
+            console.log('changeFavouriteStatus ERROR:', error.message)
+            showAlert('changeFavouriteStatus ERROR:', error.message)
+        }, function() {
+            console.log('changeFavouriteStatus OK')
+        }
+        )
+    }
+
     const showAlert = (title, message) => {
         Alert.alert(
             title,
@@ -205,7 +227,10 @@ function ListsScreen({navigation, route}){
                 extraData={state.data}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
-                    <TaskListItem id={item.id} listName={item.listName}
+                    <TaskListItem id={item.id}
+                        listName={item.listName}
+                        favourite={item.favourite}
+                        onFavouritePress={() => {changeFavouriteStatus(item.id)}}
                         onPress={()=>navigation.navigate('Your Tasks', {listId: item.id, listName: item.listName})}
                         onLongPress={() => showDeleteDialog(item.id, item.listName)}
                     />)}

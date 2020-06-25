@@ -5,10 +5,13 @@ import IconAnt from 'react-native-vector-icons/AntDesign';
 function TaskListItem(props) {
     const id = props.id;
 
+    const favIconName = "heart"
+    const notFavIconName = "hearto"
+
     return(
         <TouchableOpacity style={[styles.listItem, styles.shadow]} onPress={props.onPress} onLongPress={props.onLongPress} delayLongPress={600} activeOpacity={0.5}>
             <Text style={styles.listItemText}>{props.listName}</Text>
-            <IconAnt name="hearto" color="#0097E8" size={40} style={styles.icon}/>
+            <IconAnt onPress={props.onFavouritePress} name={props.favourite ? favIconName : notFavIconName} color="#0097E8" size={40} style={styles.icon}/>
         </TouchableOpacity>
     );
 
