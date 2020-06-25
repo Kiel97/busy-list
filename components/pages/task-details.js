@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, TouchableOpacity, ScrollView } from 'react-native'
 import { openDatabase } from 'react-native-sqlite-storage';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import { Picker } from '@react-native-community/picker';
+import IconIon from 'react-native-vector-icons/Ionicons';
+import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
 
 const db = openDatabase("busylist.db");
 
@@ -24,6 +26,22 @@ function TaskDetails({navigation, route}) {
             console.log("TaskDetails: ComponentWillUnmount")
         }
     }, [])
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <HeaderButtons>
+              <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
+                <HiddenItem title="Help" onPress={showHelp} />
+              </OverflowMenu>
+            </HeaderButtons>
+          ),
+        });
+    }, [navigation]);
+
+    const showHelp = () => {
+        console.log("TaskDetails: Show help dialog")
+    }
 
     const fetchAllTaskData = (taskId) => {
         db.transaction(tx => {
