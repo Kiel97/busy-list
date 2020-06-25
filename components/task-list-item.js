@@ -8,10 +8,13 @@ function TaskListItem(props) {
     const favIconName = "heart"
     const notFavIconName = "hearto"
 
+    const favIconColor = "#E80023"
+    const notFavIconColor = "#0097E8"
+
     return(
         <TouchableOpacity style={[styles.listItem, styles.shadow]} onPress={props.onPress} onLongPress={props.onLongPress} delayLongPress={600} activeOpacity={0.5}>
             <Text style={styles.listItemText}>{props.listName}</Text>
-            <IconAnt onPress={props.onFavouritePress} name={props.favourite ? favIconName : notFavIconName} color="#0097E8" size={40} style={styles.icon}/>
+            <IconAnt onPress={props.onFavouritePress} name={props.favourite ? favIconName : notFavIconName} color={props.favourite ? favIconColor : notFavIconColor} size={40} style={styles.icon}/>
         </TouchableOpacity>
     );
 
