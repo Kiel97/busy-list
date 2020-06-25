@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, TouchableOpacity, ScrollView } from 'react-native'
 import { openDatabase } from 'react-native-sqlite-storage';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import { Picker } from '@react-native-community/picker';
@@ -117,12 +117,15 @@ function TaskDetails({navigation, route}) {
     return (
         <View style={styles.container} >
             <ImageBackground style={styles.blueBackground} source={require('../../assets/images/background4.jpg')} imageStyle={styles.imageStyle}>
-                <View style={styles.optionsView} >
+                <ScrollView contentContainerStyle={styles.optionsView} >
                     <Text style={styles.subheaderText}>Task name</Text>
                     <TextInput style={styles.textInput} maxLength={60} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}/>
                     <Text style={styles.subheaderText}>Note</Text>
                     <TextInput style={styles.textInput} multiline={true} numberOfLines={5} maxHeight={170} placeholder="Notes for tasks..." value={taskNote} onChangeText={value => setTaskNote(value)} textAlignVertical="top"/>
-                </View>
+                    { addOrEdit==="Edit" &&
+                    <Text style={styles.subheaderText}>Created: {taskData.created}</Text>
+                    }
+                </ScrollView>
                 <View style={styles.buttonView}>
                     <TouchableOpacity style={[styles.buttonBase, taskName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={taskName.trim().length < 1} onPress={() => acceptAction()} >
                         <IconAnt name="check" size={40} color="#fff" />
