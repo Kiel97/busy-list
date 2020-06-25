@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, TouchableOpacity, ScrollView } from 'react-native'
 import { openDatabase } from 'react-native-sqlite-storage';
 import IconAnt from 'react-native-vector-icons/AntDesign';
-import { Picker } from '@react-native-community/picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import IconIon from 'react-native-vector-icons/Ionicons';
 import { HeaderButtons, HiddenItem, OverflowMenu } from 'react-navigation-header-buttons';
 
@@ -16,7 +16,18 @@ function TaskDetails({navigation, route}) {
     const [taskName, setTaskName] = React.useState('')
     const [taskNote, setTaskNote] = React.useState('')
     const [selectedTag, setSelectedTag] = React.useState('')
-    const tags = ["", "education", "recreational", "social", "diy", "charity", "cooking", "relaxation", "music", "busywork"]        // const array from Bored API docs
+    const availableTags = [
+        {label: "No tag", value: ""},
+        {label: "Educational", value: "educational"},
+        {label: "Recreational", value: "recreational"},
+        {label: "Social", value: "social"},
+        {label: "Do It Yourself", value: "diy"},
+        {label: "Charity", value: "charity"},
+        {label: "Cooking", value: "cooking"},
+        {label: "Relaxation", value: "relaxation"},
+        {label: "Music", value: "music"},
+        {label: "Busy Work", value: "busywork"},
+]        // const array from Bored API docs
 
     useEffect(() => {
         console.log("TaskDetails: ComponentDidMount")
@@ -56,7 +67,6 @@ function TaskDetails({navigation, route}) {
                 setTaskName(item.taskName)
                 setTaskNote(item.note)
                 setSelectedTag(item.tag)
-                console.log(selectedTag, item.tag)
             }
             )
         }, function(error) {
@@ -150,14 +160,14 @@ function TaskDetails({navigation, route}) {
                     <Text style={styles.subheaderText}>Task name</Text>
                     <TextInput style={styles.textInput} maxLength={60} placeholder="Type task name here..." value={taskName} onChangeText={value => setTaskName(value)}/>
                     <Text style={styles.subheaderText}>Tag (if any)</Text>
-                    <Picker style={styles.picker}
-                        mode="dropdown"
-                        selectedValue={selectedTag || ''}
-                        onValueChange={(itemValue, itemIndex)=>{setSelectedTag(itemValue)}}>
-                            {tags.map((item, index) => {
-                                return (<Picker.Item label={item} value={index} key={index}/>) 
-                            })}
-                    </Picker>
+                    <DropDownPicker
+                        items={availableTags}
+                        defaultValue={selectedTag}
+                        containerStyle={{ height: 40 }}
+                        style={{ backgroundColor: '#fafafa' }}
+                        dropDownStyle={{ backgroundColor: '#fafafa' }}
+                        onChangeItem={item => setSelectedTag(item.value)}
+                    />
                     <Text style={styles.subheaderText}>Note</Text>
                     <TextInput style={styles.textInput} multiline={true} numberOfLines={5} maxHeight={170} placeholder="Notes for tasks..." value={taskNote} onChangeText={value => setTaskNote(value)} textAlignVertical="top"/>
                     { addOrEdit==="Edit" &&
