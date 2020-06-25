@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, ImageBackground } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import IconIon from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-simple-toast';
@@ -219,7 +219,7 @@ function ListsScreen({navigation, route}){
     })
 
     return (
-        <View style={styles.container}>
+        <ImageBackground style={styles.container} source={require('../../assets/images/background2.jpg')} imageStyle={styles.imageStyle}>
             <View style={styles.searchBarView}>
                 { searchBarVisible &&
                 <SearchBar placeholder="Search for lists or tasks..."
@@ -256,7 +256,7 @@ function ListsScreen({navigation, route}){
                     navigation.navigate('List Details', {listName: "", addOrEdit: 'Add'})
                 }}
             />
-        </View>
+        </ImageBackground>
     )
 }
 
@@ -296,6 +296,9 @@ const styles = StyleSheet.create({
     },
     buttonIcon: {
         alignSelf: "center",
+    },
+    imageStyle: {
+        opacity: 0.1,
     },
 });
 

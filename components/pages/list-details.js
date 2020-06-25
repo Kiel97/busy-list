@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View, Text, TextInput, Button, Alert, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, TextInput, ImageBackground, Alert, TouchableOpacity } from 'react-native'
 import { openDatabase } from 'react-native-sqlite-storage';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 
@@ -89,7 +89,7 @@ function ListDetails({navigation, route}) {
         <View style={styles.container}>
             <Text style={styles.modeText}>{addOrEdit==='Add' ? 'Add mode' : 'Edit mode'}</Text>
             
-            <View style={styles.blueBackground}>
+            <ImageBackground style={styles.blueBackground}  source={require('../../assets/images/background3.jpg')} imageStyle={styles.imageStyle}>
                 <View style={styles.optionsView} >
                     <TextInput style={styles.textInput} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
                 </View>
@@ -102,7 +102,7 @@ function ListDetails({navigation, route}) {
                         <IconAnt name="close" size={40} color="#fff" />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ImageBackground>
         </View>
     )
 }
@@ -166,6 +166,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+    },
+    imageStyle: {
+      opacity: 0.1,
     },
 });
 

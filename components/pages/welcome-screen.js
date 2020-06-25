@@ -73,7 +73,7 @@ function WelcomeScreen({navigation, route}){
   }, []);
 
     return (
-        <ImageBackground style={styles.container} source={require('../../assets/images/background3.jpg')} imageStyle={styles.imageStyle} >
+        <ImageBackground style={styles.container} source={require('../../assets/images/background5.jpg')} imageStyle={styles.imageStyle} >
             <TouchableOpacity style={styles.containerClickable} onPress={() => navigation.navigate('Your Lists')} activeOpacity={0.7}>
               <Text style={styles.textTitle}>Busy List</Text>
               <Text style={styles.textStandard}>No idea what to do? No more!</Text>

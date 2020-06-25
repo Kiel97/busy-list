@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useLayoutEffect } from 'react';
-import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Alert, ActivityIndicator, ImageBackground } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Toast from 'react-native-simple-toast';
 import { openDatabase } from 'react-native-sqlite-storage';
@@ -285,7 +285,7 @@ function TasksScreen({navigation, route}){
     }  
 
     return (
-        <View style={styles.container}>
+        <ImageBackground style={styles.container} source={require('../../assets/images/background1.jpg')} imageStyle={styles.imageStyle}>
             <View style={styles.topInfoView}>
                 <Text style={styles.textCounter}>Completed Tasks: {doneTasksCount}/{allTasksCount}</Text>
                 <ActivityIndicator animating={fetchIndicator} size={'large'} color="#fff" />
@@ -330,7 +330,7 @@ function TasksScreen({navigation, route}){
                         console.log('Unknown option')
                 }}
             />
-        </View>
+        </ImageBackground>
     )
 }
 
@@ -378,6 +378,9 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    imageStyle: {
+        opacity: 0.1,
     },
 });
 
