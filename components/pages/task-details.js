@@ -161,6 +161,20 @@ function TaskDetails({navigation, route}) {
         navigation.goBack()
     }
 
+    const showAlert = (title, message) => {
+        Alert.alert(
+            title,
+            message,
+            [
+                {
+                    text: 'OK',
+                    onPress: () => {}
+                }
+            ],
+            { cancelable: false }
+        )
+    }
+
     return (
         <View style={styles.container} >
             <ImageBackground style={styles.blueBackground} source={require('../../assets/images/background4.jpg')} imageStyle={styles.imageStyle}>
