@@ -62,7 +62,8 @@ function TaskDetails({navigation, route}) {
             ' task, insert a name of list and press "Check" button. An app will add new task and redirect you to Tasks Screen. You can also enter optional note'+
             ' for you to read and select one of available tags to be easier to filter on Tasks Screen.\n\nIn other case you are'+
             ' in "Edit mode" and you are free to change this tasks\'s properties like task name, tag and note. You can also remove tag and note if you don\'t need them.'+
-            ' Just play with those values on press "Check" button to save changes . An app will update your tasks\'s new properties and you will be redirected'+
+            ' Just play with those values on press "Check" button to save changes. You can even move your task to another list! Enter id of destination list and check'+
+            ' name of list you want to move your task. An app will update your tasks\'s new properties and you will be redirected'+
             ' to Tasks Screen.\n\nTo close this popup, just press OK.')
     }
 
