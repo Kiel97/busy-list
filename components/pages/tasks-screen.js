@@ -21,7 +21,7 @@ function TasksScreen({navigation, route}){
     const [tasksCount, setTasksCount] = React.useState(0)
     const [doneFilter, setDoneFilter] = React.useState(2)
     const availableDoneFilters = [
-        {label: "Both", value: 2},
+        {label: "Done/Not Done", value: 2},
         {label: "Done Only", value: 1},
         {label: "Not Done Only", value: 0},
     ]   
@@ -257,13 +257,22 @@ function TasksScreen({navigation, route}){
     return (
         <ImageBackground style={styles.container} source={require('../../assets/images/background1.jpg')} imageStyle={styles.imageStyle}>
             <View style={styles.filterBars}>
+                <Text style={[styles.textCounter, {flex: 2, textAlign: 'center', margin: 5}]}>Filter by:</Text>
                 <DropDownPicker
                     items={availableDoneFilters}
                     defaultValue={doneFilter}
-                    containerStyle={{ height: 40 }}
-                    style={{ backgroundColor: '#fafafa' }}
+                    containerStyle={{ height: 40, flex: 3, margin: 5 }}
+                    style={{ backgroundColor: '#fafafa'}}
                     dropDownStyle={{ backgroundColor: '#fafafa' }}
                     onChangeItem={item => updateDoneFilter(item.value)}
+                />
+                <DropDownPicker
+                    items={[{label: 1, value: 1}, {label: 2, value: 2}]}
+                    defaultValue={1}
+                    containerStyle={{ height: 40, flex: 3, margin: 5 }}
+                    style={{ backgroundColor: '#fafafa'}}
+                    dropDownStyle={{ backgroundColor: '#fafafa' }}
+                    onChangeItem={item => {}}
                 />
             </View>
             <View style={styles.topInfoView}>
@@ -363,8 +372,12 @@ const styles = StyleSheet.create({
         opacity: 0.1,
     },
     filterBars: {
+        flex: 0.1,
         alignSelf: 'stretch',
-    }
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 });
 
 export default TasksScreen;
