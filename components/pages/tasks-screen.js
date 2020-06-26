@@ -76,7 +76,14 @@ function TasksScreen({navigation, route}){
     }
 
     const showAppHelp = () => {
-        alert('Pomoc')
+        showAlert('Tasks Screen Help',
+            'Welcome to Busy List Help! Here you can see list of tasks on it.\n\nTo add new task, press orange circle with "+" on it in bottom right corner.'+
+            ' From here you can add your own task by pressing "+" button or get a random task from the internet by pressing "dice" button.\n\nWhen you click'+
+            ' on "Add New Task" button, you will be navigated to new task screen. If you press "Get Random Task", the app will handle adding new task for you.'+
+            '\n\nTo look at the content of task or edit its properties, just press on your desired task.\n\nTo mark task as done (or not), press checkbox icon'+
+            ' next to it. The application will dynamically update its done status.\n\nYou can filter this list by setting two filters: by Done/Not Done status'+
+            ' and/or desired tag of your task. In both cases application will dynamically update filtration results respecting your filters options.'+
+            '\n\nTo close this popup, just press OK.')
     }
 
     const FetchTasksByListId = (listId, filter=doneFilter, tag=tagFilter) => {
