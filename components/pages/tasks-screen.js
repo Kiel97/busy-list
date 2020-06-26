@@ -28,7 +28,7 @@ function TasksScreen({navigation, route}){
     ]
     const availableTags = [
         {label: "All tags", value: "all"},
-        {label: "No tag", value: ""},
+        {label: "No tagged", value: ""},
         {label: "Education", value: "education"},
         {label: "Recreational", value: "recreational"},
         {label: "Social", value: "social"},
@@ -78,14 +78,17 @@ function TasksScreen({navigation, route}){
     }
 
     const FetchTasksByListId = (listId, filter=doneFilter, tag=tagFilter) => {
-        var d0, d1
+        var d0, d1, query, queryParams
         if (filter===0){d0 = 0; d1 = 0;}
         else if (filter===1){d0 = 1; d1 = 1;}
         else {d0 = 0; d1 = 1;}
-        console.log(tag)
+        
+        if (tag==="all"){query='SELECT * FROM "tasks" WHERE "tasks"."listId"=? AND "tasks"."done" IN (?,?)'; queryParams=[listId, d0, d1]}
+        else{query='SELECT * FROM "tasks" WHERE "tasks"."listId"=? AND "tasks"."done" IN (?,?) AND "tasks"."tag"=?'; queryParams=[listId, d0, d1, tag]}
+
         db.transaction(tx => {
-            tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=? AND "tasks"."done" IN (?,?)',
-            [listId, d0, d1],
+            tx.executeSql(query,
+            queryParams,
             (tx, results) => {
               var fetchedData = [];
               console.log(`FetchTasksByListId: Fetched ${results.rows.length} tasks`)
