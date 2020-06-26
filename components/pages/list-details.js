@@ -37,7 +37,12 @@ function ListDetails({navigation, route}) {
     }, [navigation]);
 
     const showHelp = () => {
-        console.log("List Details: show help dialog")
+        showAlert('Tasks Screen Help',
+            'Welcome to Busy List Help! Here you can see details of your list.\n\nHere you can be in two modes: "Add mode" and "Edit mode".\n\nIf you'+
+            ' requested to add new list, you are in "Add mode". Some options/details are not visible here like timestamp of created list. To add new'+
+            ' list, insert a name of list and press "Check" button. An app will add new list and redirect you to Lists Screen.\n\nIn other case you are'+
+            ' in "Edit mode" and you are free to change this list\'s properties like renaming it. Just click on existing name, change it and confirm'+
+            'changes. An app will update your list\'s new properties and you will be redirected to Tasks Screen.\n\nTo close this popup, just press OK.')
     }
 
     const fetchAllListData = (listId) => {
@@ -128,6 +133,20 @@ function ListDetails({navigation, route}) {
         else{
             console.log("Unknown addOrEdit status:", addOrEdit)
         }
+    }
+
+    const showAlert = (title, message) => {
+        Alert.alert(
+            title,
+            message,
+            [
+                {
+                    text: 'OK',
+                    onPress: () => {}
+                }
+            ],
+            { cancelable: false }
+        )
     }
 
     return (
