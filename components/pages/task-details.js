@@ -221,9 +221,10 @@ function TaskDetails({navigation, route}) {
                     <DropDownPicker
                         items={availableTags}
                         defaultValue={selectedTag}
-                        containerStyle={{ height: 40 }}
-                        style={{ backgroundColor: '#fafafa' }}
-                        dropDownStyle={{ backgroundColor: '#fafafa' }}
+                        containerStyle={styles.dropdownContainer}
+                        labelStyle={styles.dropdownText}
+                        style={styles.dropdown}
+                        dropDownStyle={styles.dropdown}
                         onChangeItem={item => setSelectedTag(item.value)}
                     />
                     <Text style={styles.subheaderText}>Destination List: {listName}</Text>
@@ -287,11 +288,24 @@ const styles = StyleSheet.create({
         margin: 5,
         backgroundColor: "#fff",
         color: "#111",
-        fontSize: 25,
+        fontSize: 20,
+        paddingHorizontal: 10,
+        borderRadius: 3,
+    },
+    dropdown: {
+        backgroundColor: '#fafafa',
+    },
+    dropdownContainer: {
+        height: 45,
+        marginHorizontal: 5,
+    },
+    dropdownText: {
+        fontSize: 20,
+        color: "#111",
     },
     subheaderText: {
         color: "#fff",
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         margin: 5,
     },
