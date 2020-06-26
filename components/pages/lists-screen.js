@@ -227,7 +227,7 @@ function ListsScreen({navigation, route}){
                     onChangeText={updateSearchText}
                     value={searchText}
                     lightTheme={true}
-                    placeholderTextColor="#0097E8"
+                    placeholderTextColor="#999"
                     platform="android"/>
             </View>
             <FlatList style={styles.scrollViewOfLists}
