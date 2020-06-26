@@ -28,7 +28,7 @@ function ListDetails({navigation, route}) {
         navigation.setOptions({
           headerRight: () => (
             <HeaderButtons>
-              <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#0097E8" />}>
+              <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#000" />}>
                 <HiddenItem title="Help" onPress={showHelp} />
               </OverflowMenu>
             </HeaderButtons>
