@@ -43,7 +43,12 @@ function ListsScreen({navigation, route}){
       }, [navigation]);
 
     const showAppHelp = () => {
-        alert('Pomoc')
+        showAlert('Lists Screen Help',
+            'Welcome to Busy List! Here you can see list of all your lists with tasks.\n\nTo add new list, press orange circle with "+" on it in'+
+            ' bottom right corner.\n\nTo look at the content of list, just click on it.\n\nTo mark list as a favourite (or not), press Heart'+
+            ' icon next to it. Favourite lists are displayed first on list.\n\nYou can search for list with specified search param or'+
+            ' list containing task matching search param. To do that, just enter search param in searchbar just below header. Application will'+
+            ' dynamically update search results.\n\nTo close this popup, just press OK.')
     }
 
     const updateSearchText = (newText) => {
