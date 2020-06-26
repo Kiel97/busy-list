@@ -82,7 +82,7 @@ function WelcomeScreen({navigation, route}){
             <TouchableOpacity style={styles.containerClickable} onPress={() => navigation.navigate('Your Lists')} activeOpacity={0.7}>
               <Text style={styles.textTitle}>Busy List</Text>
               <Text style={styles.textStandard}>No idea what to do? No more!</Text>
-              <View style={{marginVertical: 10}} />
+              <View style={{marginVertical: 15}} />
               <Text style={styles.textStandard}>Click to continue</Text>
             </TouchableOpacity>
             <View style={styles.appInfo}>
@@ -110,10 +110,10 @@ const styles = StyleSheet.create({
     },
     textStandard: {
       color: "#fff",
-      fontSize: 18,
+      fontSize: 22,
     },
     textTitle: {
-      fontSize: 50,
+      fontSize: 60,
       fontWeight: "bold",
       color: "#fff",
     },
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     appInfoText: {
       color: "#fff",
-      fontSize: 16,
+      fontSize: 18,
     },
 
 });
