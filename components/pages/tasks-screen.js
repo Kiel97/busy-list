@@ -29,15 +29,15 @@ function TasksScreen({navigation, route}){
     const availableTags = [
         {label: "All tags", value: "all"},
         {label: "No tagged", value: ""},
-        {label: "Education", value: "education"},
-        {label: "Recreational", value: "recreational"},
-        {label: "Social", value: "social"},
-        {label: "Do It Yourself", value: "diy"},
+        {label: "Busy Work", value: "busywork"},
         {label: "Charity", value: "charity"},
         {label: "Cooking", value: "cooking"},
-        {label: "Relaxation", value: "relaxation"},
+        {label: "Do It Yourself", value: "diy"},
+        {label: "Education", value: "education"},
         {label: "Music", value: "music"},
-        {label: "Busy Work", value: "busywork"},
+        {label: "Recreational", value: "recreational"},
+        {label: "Relaxation", value: "relaxation"},
+        {label: "Social", value: "social"},
     ]        // const array from Bored API docs + all tags
 
     const currentListId = route.params?.listId;
