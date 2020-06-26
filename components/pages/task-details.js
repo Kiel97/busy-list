@@ -12,6 +12,8 @@ function TaskDetails({navigation, route}) {
     const taskId = route.params?.taskId;
     const listId = route.params?.listId;
     const addOrEdit = route.params?.addOrEdit;
+    const [listName, setListName] = React.useState('')
+    const [destinationListId, setDestinationListId] = React.useState(route.params?.listId)
     const [taskData, setTaskData] = React.useState('')
     const [taskName, setTaskName] = React.useState('')
     const [taskNote, setTaskNote] = React.useState('')
@@ -34,6 +36,7 @@ function TaskDetails({navigation, route}) {
 
         navigation.setOptions({title: `Task Details - ${addOrEdit==="Add" ? "Add mode" : "Edit mode"}`})
         fetchAllTaskData(taskId)
+        UpdateDestinationListId(destinationListId)
 
         return () => {
             console.log("TaskDetails: ComponentWillUnmount")
@@ -91,6 +94,33 @@ function TaskDetails({navigation, route}) {
         })
     }
 
+    const fetchListName = (listId) => {
+        db.transaction(tx => {
+            tx.executeSql('SELECT "lists"."listName" FROM "lists" WHERE "lists"."id"=?',
+            [listId],
+            (tx, results) => {
+                if (results.rows.length===0){
+                    setListName("")
+                }
+                else {
+                    setListName(results.rows.item(0).listName)
+                }
+            })
+        }, function(error) {
+            console.log('fetchListName ERROR: ' + error.message)
+            Alert.alert('fetchListName ERROR',
+                        error.message,
+                        [
+                            {
+                                text: 'OK',
+                                onPress: () => navigation.goBack(),
+                            },
+                        ])
+        }, function() {
+            console.log('fetchListName OK')
+        })
+    }
+
     const addNewTaskAndGoBack = (taskName) => {
         const newTaskName = taskName.trim()
         db.transaction(tx => {
@@ -123,8 +153,8 @@ function TaskDetails({navigation, route}) {
         const trimmedNewTaskName = newTaskName.trim()
 
         db.transaction(tx => {
-            tx.executeSql('UPDATE "tasks" SET "taskName"=?, "note"=?, "tag"=? WHERE "tasks"."id"=?',
-            [trimmedNewTaskName, taskNote, selectedTag, taskId],
+            tx.executeSql('UPDATE "tasks" SET "listId"=?, "taskName"=?, "note"=?, "tag"=? WHERE "tasks"."id"=?',
+            [destinationListId, trimmedNewTaskName, taskNote, selectedTag, taskId],
             (tx, results) => {
                 console.log("updateTaskAndGoBack: Affected", results.rowsAffected)
                 Alert.alert('Update task',
@@ -142,6 +172,11 @@ function TaskDetails({navigation, route}) {
         }, function() {
             console.log('updateTaskAndGoBack OK')
         })
+    }
+
+    const UpdateDestinationListId = (newListId) => {
+        setDestinationListId(newListId)
+        fetchListName(newListId)
     }
 
     const acceptAction = () => {
@@ -190,14 +225,18 @@ function TaskDetails({navigation, route}) {
                         dropDownStyle={{ backgroundColor: '#fafafa' }}
                         onChangeItem={item => setSelectedTag(item.value)}
                     />
+                    <Text style={styles.subheaderText}>Destination List: {listName}</Text>
+                    { addOrEdit==="Edit" && 
+                        <TextInput style={styles.textInput} placeholder="Enter list Id to move task..." value={destinationListId.toString()} onChangeText={value => UpdateDestinationListId(value)}/>
+                    }
                     <Text style={styles.subheaderText}>Note</Text>
                     <TextInput style={styles.textInput} multiline={true} numberOfLines={5} maxHeight={170} placeholder="Notes for tasks..." value={taskNote} onChangeText={value => setTaskNote(value)} textAlignVertical="top"/>
                     { addOrEdit==="Edit" &&
-                    <Text style={styles.subheaderText}>Created: {taskData.created}</Text>
+                        <Text style={styles.subheaderText}>Created: {taskData.created}</Text>
                     }
                 </ScrollView>
                 <View style={styles.buttonView}>
-                    <TouchableOpacity style={[styles.buttonBase, taskName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={taskName.trim().length < 1} onPress={() => acceptAction()} >
+                    <TouchableOpacity style={[styles.buttonBase, taskName.trim().length < 1 || listName.trim().length < 1 ? styles.buttonDisabled : styles.buttonActive, styles.shadow]} disabled={taskName.trim().length < 1 || listName.trim().length < 1} onPress={() => acceptAction()} >
                         <IconAnt name="check" size={40} color="#fff" />
                     </TouchableOpacity>
 
