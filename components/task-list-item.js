@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     listItemText: {
         fontSize: 24,
         alignSelf: "center",
+        maxWidth: 250,
     },
     icon: {
         alignSelf: "center",
