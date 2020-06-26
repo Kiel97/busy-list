@@ -33,7 +33,7 @@ function ListsScreen({navigation, route}){
         navigation.setOptions({
           headerRight: () => (
             <HeaderButtons>
-              <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#000" />}>
+              <OverflowMenu style={styles.overflowMenu} OverflowIcon={<IconIon name="ios-more" size={23} color="#000" />}>
                 <HiddenItem title="Delete all lists" onPress={showDeleteEverythingDialog} />
                 <HiddenItem title="Help" onPress={showAppHelp} />
               </OverflowMenu>
@@ -303,6 +303,9 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         opacity: 0.1,
+    },
+    overflowMenu: {
+        marginHorizontal: 10,
     },
 });
 

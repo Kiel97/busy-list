@@ -61,7 +61,7 @@ function TasksScreen({navigation, route}){
         navigation.setOptions({
           headerRight: () => (
             <HeaderButtons>
-              <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#000" />}>
+              <OverflowMenu style={styles.overflowMenu} OverflowIcon={<IconIon name="ios-more" size={23} color="#000" />}>
                 <HiddenItem title="Delete all tasks" onPress={showDeleteAllDialog} />
                 <HiddenItem title="Edit list options" onPress={showListOptions} />
                 <HiddenItem title="Help" onPress={showAppHelp} />
@@ -413,6 +413,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    overflowMenu: {
+        marginHorizontal: 10,
     },
 });
 

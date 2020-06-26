@@ -47,7 +47,7 @@ function TaskDetails({navigation, route}) {
         navigation.setOptions({
           headerRight: () => (
             <HeaderButtons>
-              <OverflowMenu style={{ marginHorizontal: 10 }} OverflowIcon={<IconIon name="ios-more" size={23} color="#000" />}>
+              <OverflowMenu style={styles.overflowMenu} OverflowIcon={<IconIon name="ios-more" size={23} color="#000" />}>
                 <HiddenItem title="Help" onPress={showHelp} />
               </OverflowMenu>
             </HeaderButtons>
@@ -318,6 +318,9 @@ const styles = StyleSheet.create({
     picker: {
         backgroundColor: "#fff",
         margin: 5,
+    },
+    overflowMenu: {
+        marginHorizontal: 10,
     },
 });
 
