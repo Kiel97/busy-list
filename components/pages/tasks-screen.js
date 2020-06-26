@@ -299,7 +299,7 @@ function TasksScreen({navigation, route}){
                 />
             </View>
             <View style={styles.topInfoView}>
-                <Text style={styles.textCounter}>Visible Tasks: {tasksCount}</Text>
+                <Text style={styles.textCounter}>Found Tasks: {tasksCount}</Text>
                 <ActivityIndicator animating={fetchIndicator} size={'large'} color="#fff" />
             </View>
             <FlatList style={styles.scrollViewOfLists}
