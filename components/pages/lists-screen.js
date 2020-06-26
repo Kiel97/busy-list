@@ -48,10 +48,10 @@ function ListsScreen({navigation, route}){
             ' bottom right corner.\n\nTo look at the content of list, just click on it.\n\nTo mark list as a favourite (or not), press Heart'+
             ' icon next to it. Favourite lists are displayed first on list.\n\nYou can search for list with specified search param or'+
             ' list containing task matching search param. To do that, just enter search param in searchbar just below header. Application will'+
-            ' dynamically update search results.\n\nTo delete certain list, press it and hold your finger on it for some time. An confirmation'+
+            ' dynamically update search results.\n\nTo delete certain list, press it and hold your finger on it for some time. A confirmation'+
             ' dialog will appear. Then press "Yes" to delete that list and all tasks related to it.\n\nTo remove all lists, press "..." in top right corner'+
-            ' and select "Delete all lists" option. An confirmation dialog will appear. Beware that pressing "Yes" here will remove ALL YOUR LISTS'+
-            ' AND TASKS from memory. Use it at your own risk.\n\nTo close this popup, just press OK.')
+            ' and select "Delete all lists" option. An confirmation dialog will appear. Beware that pressing "Yes" there will remove ALL YOUR LISTS'+
+            ' AND TASKS from memory. Use it at your own risk!\n\nTo close this popup, just press OK.')
     }
 
     const updateSearchText = (newText) => {
