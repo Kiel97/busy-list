@@ -154,7 +154,7 @@ function ListDetails({navigation, route}) {
             <ImageBackground style={styles.blueBackground}  source={require('../../assets/images/background3.jpg')} imageStyle={styles.imageStyle}>
             <Text style={styles.subheaderText}>List name</Text>
                 <ScrollView style={styles.optionsView} contentContainerStyle={styles.optionsViewContent} >
-                    <TextInput style={styles.textInput} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
+                    <TextInput style={styles.textInput} maxLength={60} placeholder="Type list name here..." value={listName} onChangeText={value => setListName(value)}></TextInput>
                     { addOrEdit==="Edit" && 
                     <Text style={styles.subheaderText}>Created: {listData.created}</Text>
                     }
