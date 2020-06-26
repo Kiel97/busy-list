@@ -27,7 +27,7 @@ function TaskDetails({navigation, route}) {
         {label: "Relaxation", value: "relaxation"},
         {label: "Music", value: "music"},
         {label: "Busy Work", value: "busywork"},
-]        // const array from Bored API docs
+    ]        // const array from Bored API docs
 
     useEffect(() => {
         console.log("TaskDetails: ComponentDidMount")

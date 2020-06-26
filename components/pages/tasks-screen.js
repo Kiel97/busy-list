@@ -20,11 +20,25 @@ function TasksScreen({navigation, route}){
     const [fetchIndicator, setFetchIndicator] = React.useState(false)
     const [tasksCount, setTasksCount] = React.useState(0)
     const [doneFilter, setDoneFilter] = React.useState(2)
+    const [tagFilter, setTagFilter] = React.useState("all")
     const availableDoneFilters = [
         {label: "Done/Not Done", value: 2},
         {label: "Done Only", value: 1},
         {label: "Not Done Only", value: 0},
-    ]   
+    ]
+    const availableTags = [
+        {label: "All tags", value: "all"},
+        {label: "No tag", value: ""},
+        {label: "Education", value: "education"},
+        {label: "Recreational", value: "recreational"},
+        {label: "Social", value: "social"},
+        {label: "Do It Yourself", value: "diy"},
+        {label: "Charity", value: "charity"},
+        {label: "Cooking", value: "cooking"},
+        {label: "Relaxation", value: "relaxation"},
+        {label: "Music", value: "music"},
+        {label: "Busy Work", value: "busywork"},
+    ]        // const array from Bored API docs + all tags
 
     const currentListId = route.params?.listId;
     const currentListName = route.params?.listName;
@@ -63,11 +77,12 @@ function TasksScreen({navigation, route}){
         alert('Pomoc')
     }
 
-    const FetchTasksByListId = (listId, filter=doneFilter) => {
+    const FetchTasksByListId = (listId, filter=doneFilter, tag=tagFilter) => {
         var d0, d1
         if (filter===0){d0 = 0; d1 = 0;}
         else if (filter===1){d0 = 1; d1 = 1;}
         else {d0 = 0; d1 = 1;}
+        console.log(tag)
         db.transaction(tx => {
             tx.executeSql('SELECT * FROM "tasks" WHERE "tasks"."listId"=? AND "tasks"."done" IN (?,?)',
             [listId, d0, d1],
@@ -249,9 +264,14 @@ function TasksScreen({navigation, route}){
         )
     }
     
-    const updateDoneFilter = (filter) => {
-        setDoneFilter(filter)
-        FetchTasksByListId(currentListId, filter)
+    const updateDoneFilter = (doneFilter) => {
+        setDoneFilter(doneFilter)
+        FetchTasksByListId(currentListId, doneFilter)
+    }
+
+    const updateTagFilter = (tagFilter) => {
+        setTagFilter(tagFilter)
+        FetchTasksByListId(currentListId, doneFilter, tagFilter)
     }
 
     return (
@@ -267,12 +287,12 @@ function TasksScreen({navigation, route}){
                     onChangeItem={item => updateDoneFilter(item.value)}
                 />
                 <DropDownPicker
-                    items={[{label: 1, value: 1}, {label: 2, value: 2}]}
-                    defaultValue={1}
+                    items={availableTags}
+                    defaultValue={tagFilter}
                     containerStyle={{ height: 40, flex: 3, margin: 5 }}
                     style={{ backgroundColor: '#fafafa'}}
                     dropDownStyle={{ backgroundColor: '#fafafa' }}
-                    onChangeItem={item => {}}
+                    onChangeItem={item => {updateTagFilter(item.value)}}
                 />
             </View>
             <View style={styles.topInfoView}>
