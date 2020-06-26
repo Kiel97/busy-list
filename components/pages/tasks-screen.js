@@ -83,7 +83,11 @@ function TasksScreen({navigation, route}){
             '\n\nTo look at the content of task or edit its properties, just press on your desired task.\n\nTo mark task as done (or not), press checkbox icon'+
             ' next to it. The application will dynamically update its done status.\n\nYou can filter this list by setting two filters: by Done/Not Done status'+
             ' and/or desired tag of your task. In both cases application will dynamically update filtration results respecting your filters options.'+
-            '\n\nTo close this popup, just press OK.')
+            '\n\nTo check details or change properties of this list, press "..." icon in top right corner and select "Edit list options" from drop down list.'+
+            '\n\nTo remove certain task from app, press it and hold your finger on it. An confirmation popup will appear. Press "Yes" on it to confirm deletion'+
+            ' of this task.\n\nTo remove all tasks from this list, press "..." icon in top right corner and select "Delete all tasks" from drop down list.'+
+            'An confirmation popup will appear. Press "Yes" on it to confirm removal of all tasks from this list. Beware that you won\'t be able to recover them.'+
+            ' Use at your own risk!\n\n\To close this popup, just press OK.')
     }
 
     const FetchTasksByListId = (listId, filter=doneFilter, tag=tagFilter) => {
