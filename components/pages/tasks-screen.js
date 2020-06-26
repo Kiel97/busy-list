@@ -47,6 +47,8 @@ function TasksScreen({navigation, route}){
         console.log("TasksScreen: ComponentDidMount")
         const unsubscribe = navigation.addListener('focus', () => {
             console.log("Refresh Task list")
+            setDoneFilter(2)        // Reset to default filter
+            setTagFilter("all")     // Reset to allow all tags
             FetchTasksByListId(currentListId);
             
             navigation.setOptions({ title: `${currentListName} Tasks` })
